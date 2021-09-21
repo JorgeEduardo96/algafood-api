@@ -22,5 +22,4 @@ public class Cozinha {
 	@Column(nullable = false)
 	private String nome;
 	
-	//modelo, repositorio, import.sql -> FormaPagamento, Permissao, Cidade, Estado
 }
