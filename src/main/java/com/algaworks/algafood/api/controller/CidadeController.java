@@ -46,19 +46,27 @@ public class CidadeController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Cidade> salvar(@RequestBody Cidade cidade) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(this.cadastroCidadeService.salvar(cidade));
+	public ResponseEntity<?> salvar(@RequestBody Cidade cidade) {
+		try {
+			return ResponseEntity.status(HttpStatus.CREATED).body(this.cadastroCidadeService.salvar(cidade));
+		} catch (EntidadeNaoEncontradaException ex) {
+			return ResponseEntity.badRequest().body(ex.getMessage());
+		}
 	}
 
 	@PutMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> editar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
-		Cidade cidadeAtual = this.repository.buscar(cidadeId);
-		if (cidadeAtual != null) {
-			BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-			this.cadastroCidadeService.salvar(cidadeAtual);
-			return ResponseEntity.ok(cidadeAtual);
+	public ResponseEntity<?> editar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
+		try {
+			Cidade cidadeAtual = this.repository.buscar(cidadeId);
+			if (cidadeAtual != null) {
+				BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+				this.cadastroCidadeService.salvar(cidadeAtual);
+				return ResponseEntity.ok(cidadeAtual);
+			}
+			return ResponseEntity.notFound().build();
+		} catch (EntidadeNaoEncontradaException ex) {
+			return ResponseEntity.badRequest().body(ex.getMessage());
 		}
-		return ResponseEntity.notFound().build();
 	}
 
 	@DeleteMapping("/{cidadeId}")
