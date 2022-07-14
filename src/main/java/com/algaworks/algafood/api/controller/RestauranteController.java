@@ -1,35 +1,37 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.exception.CozinhaNaoEncontradaException;
+import com.algaworks.algafood.domain.model.exception.NegocioException;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class RestauranteController {
 
-	@Autowired
-	private RestauranteRepository repository;
+	private final RestauranteRepository repository;
 
-	@Autowired
-	private CadastroRestauranteService cadastroRestauranteService;
+	private final CadastroRestauranteService cadastroRestauranteService;
 
 	@GetMapping
 	public ResponseEntity<List<Restaurante>> listar() {
@@ -43,7 +45,7 @@ public class RestauranteController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(@RequestBody Restaurante restaurante) {
+	public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
 		try {
 			return cadastroRestauranteService.salvar(restaurante);
 		} catch (CozinhaNaoEncontradaException ex) {
@@ -52,7 +54,7 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+	public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
 		Restaurante restauranteAtual = this.cadastroRestauranteService.buscarOuFalhar(restauranteId);
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco",
 				"dataCadastro", "produtos");
@@ -65,21 +67,32 @@ public class RestauranteController {
 
 	@PatchMapping("/{restauranteId}")
 	public Restaurante atualizarParcial(@PathVariable Long restauranteId,
-										@RequestBody Map<String, Object> campos) {
+										@RequestBody Map<String, Object> campos,
+										HttpServletRequest request) {
 		Restaurante restauranteAtual = this.cadastroRestauranteService.buscarOuFalhar(restauranteId);
-		merge(campos, restauranteAtual);
+		merge(campos, restauranteAtual, request);
 		return atualizar(restauranteId, restauranteAtual);
 	}
 
-	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
-		dadosOrigem.forEach((nomePropriedade, valorProprieade) -> {
-			Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-			field.setAccessible(true);
-			Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-			ReflectionUtils.setField(field, restauranteDestino, novoValor);
-		});
+	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
+		ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
+
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+			objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+			dadosOrigem.forEach((nomePropriedade, valorProprieade) -> {
+				Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+				field.setAccessible(true);
+				Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+				ReflectionUtils.setField(field, restauranteDestino, novoValor);
+			});
+		} catch (IllegalArgumentException ex) {
+			Throwable rootCause = ExceptionUtils.getRootCause(ex);
+			throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, serverHttpRequest);
+		}
 	}
 
 }

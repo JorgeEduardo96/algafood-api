@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.exception;
+package com.algaworks.algafood.domain.model.exception;
 
 public class CozinhaNaoEncontradaException extends EntidadeNaoEncontradaException {
 

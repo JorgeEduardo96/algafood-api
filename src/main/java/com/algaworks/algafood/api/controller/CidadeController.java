@@ -1,33 +1,28 @@
 package com.algaworks.algafood.api.controller;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import com.algaworks.algafood.api.exceptionhandler.Problema;
-import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
-import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.domain.model.exception.EstadoNaoEncontradoException;
+import com.algaworks.algafood.domain.model.exception.NegocioException;
+import com.algaworks.algafood.domain.repository.CidadeRepository;
+import com.algaworks.algafood.domain.service.CadastroCidadeService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.model.Cidade;
-import com.algaworks.algafood.domain.repository.CidadeRepository;
-import com.algaworks.algafood.domain.service.CadastroCidadeService;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class CidadeController {
 
-	@Autowired
-	private CidadeRepository repository;
+	private final CidadeRepository repository;
 
-	@Autowired
-	private CadastroCidadeService cadastroCidadeService;
+	private final CadastroCidadeService cadastroCidadeService;
 
 	@GetMapping
 	public ResponseEntity<List<Cidade>> listar() {
@@ -41,7 +36,7 @@ public class CidadeController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade adicionar(@RequestBody Cidade cidade) {
+	public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
 		try {
 			return this.cadastroCidadeService.salvar(cidade);
 		} catch (EstadoNaoEncontradoException ex) {
@@ -50,7 +45,7 @@ public class CidadeController {
 	}
 
 	@PutMapping("/{cidadeId}")
-	public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
+	public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody @Valid Cidade cidade) {
 		Cidade cidadeAtual = this.cadastroCidadeService.buscarOuFalhar(cidadeId);
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 		try {
