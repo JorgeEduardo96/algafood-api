@@ -6,6 +6,7 @@ import com.algaworks.algafood.domain.model.exception.RestauranteNaoEncontradoExc
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -15,6 +16,7 @@ public class CadastroRestauranteService {
 
 	private final CadastroCozinhaService cadastroCozinhaService;
 
+	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Long cozinhaId = restaurante.getCozinha().getId();
 		Cozinha cozinha = this.cadastroCozinhaService.buscarOuFalhar(cozinhaId);
