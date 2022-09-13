@@ -1,5 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
+import com.algaworks.algafood.api.assembler.CidadeModelAssembler;
+import com.algaworks.algafood.api.model.CidadeModel;
+import com.algaworks.algafood.api.model.input.CidadeInput;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.exception.NegocioException;
@@ -24,32 +28,37 @@ public class CidadeController {
 
 	private final CadastroCidadeService cadastroCidadeService;
 
+	private final CidadeModelAssembler assembler;
+
+	private final CidadeInputDisassembler disassembler;
+
 	@GetMapping
-	public ResponseEntity<List<Cidade>> listar() {
-		return ResponseEntity.ok(this.repository.findAll());
+	public ResponseEntity<List<CidadeModel>> listar() {
+		return ResponseEntity.ok(this.assembler.toCollectionModel(this.repository.findAll()));
 	}
 
 	@GetMapping("/{cidadeId}")
-	public Cidade buscar(@PathVariable Long cidadeId) {
-		return this.cadastroCidadeService.buscarOuFalhar(cidadeId);
+	public CidadeModel buscar(@PathVariable Long cidadeId) {
+		return this.assembler.toModel(this.cadastroCidadeService.buscarOuFalhar(cidadeId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
+	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-			return this.cadastroCidadeService.salvar(cidade);
+			return this.assembler.toModel(cadastroCidadeService.salvar(
+					this.disassembler.toDomainObject(cidadeInput)));
 		} catch (EstadoNaoEncontradoException ex) {
 			throw new NegocioException(ex.getMessage(), ex);
 		}
 	}
 
 	@PutMapping("/{cidadeId}")
-	public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody @Valid Cidade cidade) {
+	public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
 		Cidade cidadeAtual = this.cadastroCidadeService.buscarOuFalhar(cidadeId);
-		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+		this.disassembler.copyToDomainObject(cidadeInput, cidadeAtual);
 		try {
-			return this.cadastroCidadeService.salvar(cidadeAtual);
+			return this.assembler.toModel(cadastroCidadeService.salvar(cidadeAtual));
 		} catch (EstadoNaoEncontradoException ex) {
 			throw new NegocioException(ex.getMessage(), ex);
 		}

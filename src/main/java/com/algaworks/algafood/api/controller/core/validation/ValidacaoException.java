@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.validation;
+package com.algaworks.algafood.api.controller.core.validation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
