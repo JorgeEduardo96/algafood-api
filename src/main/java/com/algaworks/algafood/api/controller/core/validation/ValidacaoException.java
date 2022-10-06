@@ -1,10 +1,10 @@
 package com.algaworks.algafood.api.controller.core.validation;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class ValidacaoException extends RuntimeException {
 

@@ -4,14 +4,14 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CadastroCozinhaService {
 
 	public static final String MSG_COZINHA_EM_USO = "Cozinha de código %d não pode ser removida, pois está em uso!";
@@ -26,6 +26,7 @@ public class CadastroCozinhaService {
 	public void excluir(Long cozinhaId) {
 		try {
 			this.repository.deleteById(cozinhaId);
+			this.repository.flush();
 		} catch (EmptyResultDataAccessException ex) {
 			throw new CozinhaNaoEncontradaException(cozinhaId);
 		} catch (DataIntegrityViolationException ex) {

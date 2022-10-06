@@ -7,7 +7,7 @@ import com.algaworks.algafood.domain.model.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.MessageSource;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;

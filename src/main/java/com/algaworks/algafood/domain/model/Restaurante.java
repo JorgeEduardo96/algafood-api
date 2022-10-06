@@ -27,6 +27,8 @@ public class Restaurante {
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
+	private Boolean ativo = Boolean.TRUE;
+
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dataCadastro;
@@ -50,4 +52,13 @@ public class Restaurante {
 
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
+
+	public void ativar() {
+		setAtivo(true);
+	}
+
+	public void inativar() {
+		setAtivo(false);
+	}
+
 }

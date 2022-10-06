@@ -5,11 +5,12 @@ import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.exception.NegocioException;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RestauranteController {
 
 	private final RestauranteRepository repository;
@@ -48,7 +49,7 @@ public class RestauranteController {
 		try {
 			return this.assembler.toModel(cadastroRestauranteService.salvar(
 					this.disassembler.toDomainObject(restauranteInput)));
-		} catch (CozinhaNaoEncontradaException ex) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException ex) {
 			throw new NegocioException(ex.getMessage());
 		}
 	}
@@ -60,9 +61,22 @@ public class RestauranteController {
 		this.disassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 		try {
 			return this.assembler.toModel(this.cadastroRestauranteService.salvar(restauranteAtual));
-		} catch (CozinhaNaoEncontradaException ex) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException ex) {
 			throw new NegocioException(ex.getMessage());
 		}
 	}
+
+	@PutMapping("/{restauranteId}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativar(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.ativar(restauranteId);
+	}
+
+	@DeleteMapping("/{restauranteId}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativar(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.inativar(restauranteId);
+	}
+
 
 }
