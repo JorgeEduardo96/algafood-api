@@ -1,16 +1,20 @@
 package com.algaworks.algafood.domain.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Usuario {
@@ -24,6 +28,9 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
     private String senha;
 
     @CreationTimestamp
@@ -34,5 +41,21 @@ public class Usuario {
     @JoinTable(name = "usuario_grupo",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id"))
-    private List<Grupo> grupos = new ArrayList<>();
+    private Set<Grupo> grupos = new HashSet<>();
+
+    public boolean adicionarGrupo(Grupo grupo) {
+        return getGrupos().add(grupo);
+    }
+
+    public boolean desassociarGrupo(Grupo grupo) {
+        return getGrupos().remove(grupo);
+    }
+
+    public boolean senhaCoincidem(String senha) {
+        return getSenha().equals(senha);
+    }
+
+    public boolean senhaNaoCoincidem(String senha) {
+        return !senhaCoincidem(senha);
+    }
 }

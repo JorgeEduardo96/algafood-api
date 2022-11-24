@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller.core.validation;
 
-import lombok.RequiredArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 
 @RequiredArgsConstructor

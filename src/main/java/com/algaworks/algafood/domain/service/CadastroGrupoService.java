@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.model.Grupo;
+import com.algaworks.algafood.domain.model.Permissao;
 import com.algaworks.algafood.domain.model.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.model.exception.GrupoNaoEncontradoException;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
@@ -17,6 +18,8 @@ public class CadastroGrupoService {
     private static final String MSG_GRUPO_EM_USO = "Grupo de código %d não pode ser removido, pois está em uso";
 
     private final GrupoRepository repository;
+
+    private final CadastroPermissaoService cadastroPermissaoService;
 
     @Transactional
     public Grupo salvar(Grupo grupo) { return this.repository.save(grupo); }
@@ -37,6 +40,22 @@ public class CadastroGrupoService {
     public Grupo buscarOuFalhar(Long idGrupo) {
         return this.repository.findById(idGrupo).orElseThrow(()
                 -> new GrupoNaoEncontradoException(idGrupo));
+    }
+
+    @Transactional
+    public void incluirPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissaoService.buscarOuFalhar(permissaoId);
+
+        grupo.incluirPermissao(permissao);
+    }
+
+    @Transactional
+    public void excluirPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissaoService.buscarOuFalhar(permissaoId);
+
+        grupo.excluirPermissao(permissao);
     }
 
 }

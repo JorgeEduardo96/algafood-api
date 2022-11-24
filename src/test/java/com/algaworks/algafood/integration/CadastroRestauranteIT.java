@@ -1,4 +1,4 @@
-package com.algaworks.algafood;
+package com.algaworks.algafood.integration;
 
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -36,7 +36,7 @@ public class CadastroRestauranteIT {
 
     private final Long RESTAURANTE_ID_INEXISTENTE = 999L;
 
-    private Restaurante burgerTopRestaurante = new Restaurante();
+    private Restaurante burgerTopRestaurante = Restaurante.builder().build();
     
     @Autowired
     private DatabaseCleaner databaseCleaner;
@@ -70,21 +70,21 @@ public class CadastroRestauranteIT {
     }
 
     private void prepararDados() {
-        Cozinha cozinhaBrasileira = new Cozinha();
+        Cozinha cozinhaBrasileira = Cozinha.builder().build();
         cozinhaBrasileira.setNome("Brasileira");
         this.cozinhaRepository.save(cozinhaBrasileira);
 
-        Cozinha cozinhaAmericana = new Cozinha();
+        Cozinha cozinhaAmericana = Cozinha.builder().build();
         cozinhaAmericana.setNome("Americana");
         this.cozinhaRepository.save(cozinhaAmericana);
 
-        Restaurante loucuraCariocaRestaurante = new Restaurante();
+        Restaurante loucuraCariocaRestaurante = Restaurante.builder().build();
         loucuraCariocaRestaurante.setNome("Loucura Carioca");
         loucuraCariocaRestaurante.setTaxaFrete(new BigDecimal(10));
         loucuraCariocaRestaurante.setCozinha(cozinhaBrasileira);
         this.restauranteRepository.save(loucuraCariocaRestaurante);
 
-        burgerTopRestaurante = new Restaurante();
+        burgerTopRestaurante = Restaurante.builder().build();
         burgerTopRestaurante.setNome("Burger Top");
         burgerTopRestaurante.setTaxaFrete(new BigDecimal(10));
         burgerTopRestaurante.setCozinha(cozinhaAmericana);

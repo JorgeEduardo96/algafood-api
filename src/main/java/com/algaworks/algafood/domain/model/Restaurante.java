@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,11 +8,16 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Builder
 public class Restaurante {
 
 	@Id
@@ -28,6 +32,8 @@ public class Restaurante {
 	private BigDecimal taxaFrete;
 
 	private Boolean ativo = Boolean.TRUE;
+
+	private Boolean aberto = Boolean.FALSE;
 
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
@@ -45,13 +51,35 @@ public class Restaurante {
 	@JoinTable(name = "restaurante_forma_pagamento",
 			joinColumns = @JoinColumn(name="restaurante_id"),
 			inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
-	private List<FormaPagamento> formasPagamento = new ArrayList<>();
+	private Set<FormaPagamento> formasPagamento = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "restaurante_usuario_responsavel",
+		joinColumns = @JoinColumn(name = "restaurante_id"),
+		inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	private Set<Usuario> usuarioResponsavel = new HashSet<>();
 
 	@Embedded
 	private Endereco endereco;
 
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();
+
+	public boolean associarResponsavel(Usuario usuario) {
+		return getUsuarioResponsavel().add(usuario);
+	}
+
+	public boolean desassociarResponsavel(Usuario usuario) {
+		return getUsuarioResponsavel().remove(usuario);
+	}
+
+	public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
+		return getFormasPagamento().add(formaPagamento);
+	}
+
+	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
+		return getFormasPagamento().remove(formaPagamento);
+	}
 
 	public void ativar() {
 		setAtivo(true);
@@ -60,5 +88,9 @@ public class Restaurante {
 	public void inativar() {
 		setAtivo(false);
 	}
+
+	public void abrir() { setAberto(true); }
+
+	public void fechar() { setAberto(false); }
 
 }

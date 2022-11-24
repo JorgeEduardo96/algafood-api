@@ -1,4 +1,4 @@
-package com.algaworks.algafood;
+package com.algaworks.algafood.integration;
 
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
@@ -28,7 +28,7 @@ class CadastroCozinhaIT {
 
 	private String jsonCorretoCozinhaChinesa;
 
-	private Cozinha cozinhaAmericana = new Cozinha();
+	private Cozinha cozinhaAmericana = Cozinha.builder().build();
 
 	@LocalServerPort
 	private int port;
@@ -109,7 +109,7 @@ class CadastroCozinhaIT {
 	}
 
 	private void prepararDados() {
-		Cozinha cozinha1 = new Cozinha();
+		Cozinha cozinha1 = Cozinha.builder().build();
 		cozinha1.setNome("Tailandesa");
 		this.repository.save(cozinha1);
 

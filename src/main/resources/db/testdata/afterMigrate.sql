@@ -12,6 +12,7 @@ DELETE FROM restaurante;
 DELETE FROM restaurante_forma_pagamento;
 DELETE FROM usuario;
 DELETE FROM usuario_grupo;
+DELETE FROM restaurante_usuario_responsavel;
 
 SET foreign_key_checks = 1;
 
@@ -33,6 +34,7 @@ INSERT INTO cozinha (id, nome) VALUES (4, 'Brasileira');
 INSERT INTO estado (id, nome) VALUES (1, 'Minas Gerais');
 INSERT INTO estado (id, nome) VALUES (2, 'São Paulo');
 INSERT INTO estado (id, nome) VALUES (3, 'Ceará');
+INSERT INTO estado (id, nome) VALUES (4, 'Pernambuco');
 
 INSERT INTO cidade (id, nome, estado_id) VALUES (1, 'Uberlândia', 1);
 INSERT INTO cidade (id, nome, estado_id) VALUES (2, 'Belo Horizonte', 1);
@@ -40,12 +42,12 @@ INSERT INTO cidade (id, nome, estado_id) VALUES (3, 'São Paulo', 2);
 INSERT INTO cidade (id, nome, estado_id) VALUES (4, 'Campinas', 2);
 INSERT INTO cidade (id, nome, estado_id) VALUES (5, 'Fortaleza', 3);
 
-INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, ativo) VALUES (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro', true);
-INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) VALUES (2, 'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp, true);
-INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) VALUES (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true);
-INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) VALUES (4, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp, true);
-INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) VALUES (5, 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp, true);
-INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo) VALUES (6, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp, true);
+INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro, ativo, aberto) VALUES (1, 'Thai Gourmet', 10, 1, utc_timestamp, utc_timestamp, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro', true, true);
+INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) VALUES (2, 'Thai Delivery', 9.50, 1, utc_timestamp, utc_timestamp, true, true);
+INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) VALUES (3, 'Tuk Tuk Comida Indiana', 15, 2, utc_timestamp, utc_timestamp, true, true);
+INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) VALUES (4, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp, true, true);
+INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) VALUES (5, 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp, true, true);
+INSERT INTO restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, ativo, aberto) VALUES (6, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp, true, true);
 
 INSERT INTO forma_pagamento (id, descricao) VALUES (1, 'Cartão de crédito');
 INSERT INTO forma_pagamento (id, descricao) VALUES (2, 'Cartão de débito');
@@ -65,4 +67,13 @@ INSERT INTO produto (nome, descricao, preco, ativo, restaurante_id) VALUES ('T-B
 INSERT INTO produto (nome, descricao, preco, ativo, restaurante_id) VALUES ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 5);
 INSERT INTO produto (nome, descricao, preco, ativo, restaurante_id) VALUES ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
-INSERT INTO grupo (nome) VALUES ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+INSERT INTO usuario (id, email, nome, senha, data_cadastro) VALUES (1, 'programador.junior@test.com', 'Programador Júnior', 'Junior123!', utc_timestamp), (2, 'programador.pleno@test.com', 'Programador Pleno', 'Pleno123!', utc_timestamp), (3, 'programador.senior@test.com', 'Programador Sênior', 'Senior123!', utc_timestamp);
+insert into usuario (id, nome, email, senha, data_cadastro) values (4, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
+
+insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
+
+insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
+
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 4), (3, 4);

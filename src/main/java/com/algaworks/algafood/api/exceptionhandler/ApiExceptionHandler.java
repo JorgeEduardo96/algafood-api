@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -148,7 +149,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     }
 
                     return Problem.Object.builder()
-                            .name(name)
+                            .name(WordUtils.capitalize(name))
                             .userMessage(message)
                             .build();
                 })

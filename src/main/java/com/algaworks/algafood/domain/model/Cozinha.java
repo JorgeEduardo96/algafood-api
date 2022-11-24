@@ -1,16 +1,17 @@
 package com.algaworks.algafood.domain.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Builder
 public class Cozinha {
 
 	@Id
@@ -23,6 +24,6 @@ public class Cozinha {
 	private String nome;
 
 	@OneToMany(mappedBy = "cozinha")
-	private List<Restaurante> restaurantes = new ArrayList<>();
+	private List<Restaurante> restaurantes;
 
 }

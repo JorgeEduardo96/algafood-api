@@ -1,8 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.api.controller.core.validation.Groups;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -12,10 +11,13 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Builder
 public class Cidade {
-	
+
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

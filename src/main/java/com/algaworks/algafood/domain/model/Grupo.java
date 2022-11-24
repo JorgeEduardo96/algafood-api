@@ -1,13 +1,17 @@
 package com.algaworks.algafood.domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Grupo {
@@ -24,6 +28,14 @@ public class Grupo {
     @JoinTable(name = "grupo_permissao",
             joinColumns = @JoinColumn(name = "grupo_id"),
             inverseJoinColumns = @JoinColumn(name = "permissao_id"))
-    private List<Permissao> permissoes = new ArrayList<>();
+    private Set<Permissao> permissoes = new HashSet<>();
+
+    public boolean incluirPermissao(Permissao permissao) {
+        return getPermissoes().add(permissao);
+    }
+
+    public boolean excluirPermissao(Permissao permissao) {
+        return getPermissoes().remove(permissao);
+    }
 
 }
