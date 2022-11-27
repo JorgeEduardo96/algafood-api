@@ -6,11 +6,13 @@ import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
+import com.algaworks.algafood.domain.infraestructure.repository.spec.PedidoSpecs;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.model.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.exception.NegocioException;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.BuscaPedidoService;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -44,8 +46,8 @@ public class PedidoController {
     private final EmissaoPedidoService emissaoPedidoService;
 
     @GetMapping
-    public List<PedidoResumoModel> listar() {
-        return pedidoResumoModelAssembler.toCollectionModel(repository.findAll());
+    public List<PedidoResumoModel> filtrar(PedidoFilter filtro) {
+        return pedidoResumoModelAssembler.toCollectionModel(repository.findAll(PedidoSpecs.usandoFiltro(filtro)));
     }
 
 //    @GetMapping
