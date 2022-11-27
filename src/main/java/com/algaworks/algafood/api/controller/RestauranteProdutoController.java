@@ -32,10 +32,12 @@ public class RestauranteProdutoController {
 	private final ProdutoRepository repository;
 
 	@GetMapping
-	public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
+	public List<ProdutoModel> listar(@PathVariable Long restauranteId,
+									 @RequestParam(required = false) boolean incluirInativos) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
-		List<Produto> todosProdutos = repository.findByRestaurante(restaurante);
+		List<Produto> todosProdutos = incluirInativos ? repository.findTodosByRestaurante(restaurante) :
+				repository.findAtivosByRestaurante(restaurante);
 
 		return assembler.toCollectionModel(todosProdutos);
 	}

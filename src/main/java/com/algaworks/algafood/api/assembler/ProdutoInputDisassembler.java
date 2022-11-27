@@ -4,14 +4,12 @@ import com.algaworks.algafood.api.model.input.ProdutoInput;
 import com.algaworks.algafood.domain.model.Produto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class ProdutoInputDisassembler {
     
-    @Autowired
     private ModelMapper modelMapper;
     
     public Produto toDomainObject(ProdutoInput produtoInput) {
