@@ -1,6 +1,6 @@
-package com.algaworks.algafood.domain.infraestructure.repository;
+package com.algaworks.algafood.infraestructure.repository;
 
-import com.algaworks.algafood.domain.infraestructure.repository.spec.RestauranteSpecs;
+import com.algaworks.algafood.infraestructure.repository.spec.RestauranteSpecs;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.query.RestauranteRepositoryQueries;

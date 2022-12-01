@@ -1,10 +1,16 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.CozinhaModelAssembler;
+import com.algaworks.algafood.api.model.CozinhaModel;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +25,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CozinhaController {
 
+	private final CozinhaModelAssembler assembler;
 
 	private final CozinhaRepository repository;
 
 	private final CadastroCozinhaService cadastroCozinhaService;
 
 	@GetMapping
-	public ResponseEntity<List<Cozinha>> listar() {
-		return ResponseEntity.ok(repository.findAll());
+	public Page<CozinhaModel> listar(@PageableDefault(size = 2) Pageable pageable) {
+		Page<Cozinha> cozinhas = repository.findAll(pageable);
+		List<CozinhaModel> cozinhasModel = assembler.toCollecionModel(cozinhas.getContent());
+
+		Page<CozinhaModel> cozinhasModelPage = new PageImpl<>(cozinhasModel, pageable, cozinhas.getTotalElements());
+
+		return cozinhasModelPage;
 	}
 
 	@GetMapping("/{cozinhaId}")

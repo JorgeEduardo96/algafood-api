@@ -1,20 +1,20 @@
-package com.algaworks.algafood.domain.infraestructure.repository.spec;
+package com.algaworks.algafood.infraestructure.repository.spec;
 
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
+import com.algaworks.algafood.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class PedidoSpecs {
 
     public static Specification<Pedido> usandoFiltro(PedidoFilter filtro) {
         return (root, query, builder) -> {
-            root.fetch("restaurante").fetch("cozinha");
-            root.fetch("cliente");
+            if (Pedido.class.equals(query.getResultType())) {
+                root.fetch("restaurante").fetch("cozinha");
+                root.fetch("cliente");
+            }
 
             var predicates = new ArrayList<Predicate>();
 
