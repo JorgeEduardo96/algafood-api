@@ -20,7 +20,7 @@ public class ProdutoModelAssembler {
     }
 
     public List<ProdutoModel> toCollectionModel(List<Produto> produtos) {
-        return produtos.stream().map(produto -> toModel(produto)).collect(Collectors.toList());
+        return produtos.stream().map(this::toModel).collect(Collectors.toList());
     }
 
 }

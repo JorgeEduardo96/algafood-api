@@ -22,6 +22,6 @@ public class FormaPagamentoModelAssembler {
     }
 
     public List<FormaPagamentoModel> toCollectionModel(Collection<FormaPagamento> formaPagamentoList) {
-        return formaPagamentoList.stream().map(formaPagamento -> toModel(formaPagamento)).collect(Collectors.toList());
+        return formaPagamentoList.stream().map(this::toModel).collect(Collectors.toList());
     }
 }

@@ -21,7 +21,7 @@ public class PermissaoModelAssembler {
     }
 
     public List<PermissaoModel> toCollectionModel(Collection<Permissao> permissoes) {
-        return permissoes.stream().map(permissao -> toModel(permissao)).collect(Collectors.toList());
+        return permissoes.stream().map(this::toModel).collect(Collectors.toList());
     }
 
 }

@@ -20,7 +20,7 @@ public class CidadeModelAssembler {
     }
 
     public List<CidadeModel> toCollectionModel(List<Cidade> cidades) {
-        return cidades.stream().map(cidade -> toModel(cidade)).collect(Collectors.toList());
+        return cidades.stream().map(this::toModel).collect(Collectors.toList());
     }
 
 

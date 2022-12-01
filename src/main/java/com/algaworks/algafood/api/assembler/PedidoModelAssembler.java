@@ -21,7 +21,7 @@ public class PedidoModelAssembler {
     }
 
     public List<PedidoModel> toCollectionModel(Collection<Pedido> pedidos) {
-        return pedidos.stream().map(pedido -> toModel(pedido)).collect(Collectors.toList());
+        return pedidos.stream().map(this::toModel).collect(Collectors.toList());
     }
 
 }

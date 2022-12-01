@@ -21,7 +21,7 @@ public class UsuarioModelAssembler {
     }
 
     public List<UsuarioModel> toCollectionModel(Collection<Usuario> usuarios) {
-        return usuarios.stream().map(usuario -> toModel(usuario)).collect(Collectors.toList());
+        return usuarios.stream().map(this::toModel).collect(Collectors.toList());
     }
 
 }
