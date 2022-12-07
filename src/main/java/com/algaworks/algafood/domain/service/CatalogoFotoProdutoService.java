@@ -35,6 +35,7 @@ public class CatalogoFotoProdutoService {
         FotoStorageService.NovaFoto novaFoto = FotoStorageService.NovaFoto.builder()
                 .nomeArquivo(foto.getNomeArquivo())
                 .inputStream(dadosArquivos)
+                .contentType(foto.getContentType())
                 .build();
 
         fotoStorageService.substituir(novaFoto, nomeArquivoExistente);
@@ -45,6 +46,14 @@ public class CatalogoFotoProdutoService {
     public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
         return this.produtoRepository.findFotoById(restauranteId, produtoId).orElseThrow(() ->
                 new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
+    }
+
+    @Transactional
+    public void excluir(Long restauranteId, Long produtoId) {
+        FotoProduto fotoProduto = buscarOuFalhar(restauranteId, produtoId);
+
+        this.produtoRepository.deleteAndFlush(fotoProduto);
+        this.fotoStorageService.remover(fotoProduto.getNomeArquivo());
     }
 
 }

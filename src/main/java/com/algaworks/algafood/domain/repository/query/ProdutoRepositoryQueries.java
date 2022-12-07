@@ -6,8 +6,10 @@ public interface ProdutoRepositoryQueries {
 
     FotoProduto save(FotoProduto foto);
 
-    FotoProduto saveAndFlush(FotoProduto foto);
+    FotoProduto saveAndFlush(FotoProduto fotoProduto);
 
-    void delete(FotoProduto foto);
+    void delete(FotoProduto fotoProduto);
+
+    void deleteAndFlush(FotoProduto fotoProduto);
 
 }

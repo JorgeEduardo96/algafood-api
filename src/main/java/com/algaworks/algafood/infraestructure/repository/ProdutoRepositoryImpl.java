@@ -22,6 +22,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
         return entityManager.merge(foto);
     }
 
+    @Transactional
     @Override
     public FotoProduto saveAndFlush(FotoProduto foto) {
         foto = entityManager.merge(foto);
@@ -33,5 +34,12 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
     @Override
     public void delete(FotoProduto foto) {
         entityManager.remove(foto);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAndFlush(FotoProduto fotoProduto) {
+        entityManager.remove(fotoProduto);
+        entityManager.flush();
     }
 }

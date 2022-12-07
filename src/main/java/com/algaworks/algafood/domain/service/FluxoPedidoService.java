@@ -10,11 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class FluxoPedidoService {
 
     private final BuscaPedidoService buscaPedidoService;
+    private final EnvioEmailService envioEmailService;
 
     @Transactional
     public void confirmar(String codigo) {
         Pedido pedido = buscaPedidoService.buscarOuFalhar(codigo);
         pedido.confirmar();
+
+        var mensagem = EnvioEmailService.Mensagem.builder()
+                .assunto(pedido.getRestaurante().getNome() + " - Pedido Confirmado")
+                .corpo("pedido-confirmado.html")
+                .variavel("pedido", pedido)
+                .destinatario(pedido.getCliente().getEmail())
+                .build();
+
+        envioEmailService.enviar(mensagem);
     }
 
     @Transactional
