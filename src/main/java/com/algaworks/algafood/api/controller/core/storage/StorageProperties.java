@@ -16,7 +16,7 @@ public class StorageProperties {
 
     private Local local = new Local();
     private S3 s3 = new S3();
-    private TipoStorage tipo = TipoStorage.LOCAL;
+    private TipoStorage tipoStorage = TipoStorage.LOCAL;
 
     public enum TipoStorage {
 

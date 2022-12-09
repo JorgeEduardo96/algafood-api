@@ -18,4 +18,15 @@ public class EmailProperties {
     @NotNull
     private String remetente;
 
+    private TipoEnvioEmail impl = TipoEnvioEmail.FAKE;
+
+    @NotNull
+    private String sandBoxDestinatario;
+
+    public enum TipoEnvioEmail {
+
+        SES, FAKE, SANDBOX
+
+    }
+
 }
