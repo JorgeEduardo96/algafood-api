@@ -20,7 +20,7 @@ public class UsuarioInput {
     @NotBlank
     private String nome;
 
-    @SegurancaSenha(requisitos = {MINUSCULO, MAIUSCULO, DIGITO, CARACTER_ESPECIAL})
+    @SegurancaSenha
     @NotBlank
     private String senha;
     

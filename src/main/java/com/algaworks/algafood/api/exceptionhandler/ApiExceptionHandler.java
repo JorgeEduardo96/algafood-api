@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import com.algaworks.algafood.api.controller.core.validation.SegurancaSenha;
 import com.algaworks.algafood.api.controller.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.model.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.model.exception.EntidadeNaoEncontradaException;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
@@ -41,6 +43,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno no sistema." +
             " Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
+
+    @Value("#{'${algafood.senha.requisitos}'.split(',')}")
+    private List<SegurancaSenha.RequisitosSenha> requisitosSenha;
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
@@ -157,11 +162,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(objectError -> {
                     String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 
+                    if (ex instanceof MethodArgumentNotValidException &&
+                            message.contains("senha") && message.contains(":requisitos")) {
+                        String requisitos = requisitosSenha.stream().map(
+                                SegurancaSenha.RequisitosSenha::getDescricao).collect(Collectors.joining(", "));
+
+                       message = message.replaceAll(":requisitos", requisitos);
+                    }
+
                     String name = objectError.getObjectName();
 
-                    if (objectError instanceof FieldError) {
-                        name = ((FieldError) objectError).getField();
-                    }
+                    if (objectError instanceof FieldError) name = ((FieldError) objectError).getField();
 
                     return Problem.Object.builder()
                             .name(WordUtils.capitalize(name))

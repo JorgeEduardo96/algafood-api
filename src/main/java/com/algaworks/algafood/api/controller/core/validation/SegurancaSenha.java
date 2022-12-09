@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller.core.validation;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -17,22 +19,16 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface SegurancaSenha {
 
 
-    String message() default "A senha necessita conter ao menos um caractere da seguinte forma: {requisitos}";
+    String message() default "A senha necessita conter ao menos um caractere da seguinte forma: :requisitos";
 
     Class<?>[] groups() default { };
 
     Class<? extends Payload>[] payload() default { };
 
-    RequisitosSenha[] requisitos();
-
     class SegurancaSenhaValidator implements ConstraintValidator<SegurancaSenha, String> {
 
+        @Value("#{'${algafood.senha.requisitos}'.split(',')}")
         private List<RequisitosSenha> requisitosParaValidar;
-
-        @Override
-        public void initialize(SegurancaSenha constraintAnnotation) {
-            this.requisitosParaValidar = List.of(constraintAnnotation.requisitos());
-        }
 
         @Override
         public boolean isValid(String value, ConstraintValidatorContext context) {
@@ -65,7 +61,7 @@ public @interface SegurancaSenha {
                     return false;
                 } else if (requisito.equals(RequisitosSenha.MINUSCULO) && !temMinusculo) {
                     return false;
-                } else if (requisito.equals(RequisitosSenha.CARACTER_ESPECIAL) && !temCaracterEspecial) {
+                } else if (requisito.equals(RequisitosSenha.CARACTERE_ESPECIAL) && !temCaracterEspecial) {
                     return false;
                 } else if (requisito.equals(RequisitosSenha.DIGITO) && !temDigito) {
                     return false;
@@ -77,6 +73,19 @@ public @interface SegurancaSenha {
     }
 
     enum RequisitosSenha {
-        MAIUSCULO, MINUSCULO, CARACTER_ESPECIAL, DIGITO
+        MAIUSCULO("Maiúsculo"),
+        MINUSCULO("Minúsculo"),
+        CARACTERE_ESPECIAL("Caractere Especial"),
+        DIGITO("Dígito");
+
+        private String descricao;
+
+        public String getDescricao() {
+            return descricao;
+        }
+
+        RequisitosSenha(String descricao) {
+            this.descricao = descricao;
+        }
     }
 }

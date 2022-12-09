@@ -6,8 +6,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-import static com.algaworks.algafood.api.controller.core.validation.SegurancaSenha.RequisitosSenha.*;
-
 @Getter
 @Setter
 public class SenhaInput {
@@ -15,8 +13,8 @@ public class SenhaInput {
     @NotBlank
     private String senhaAtual;
 
-    @SegurancaSenha(requisitos = {MINUSCULO, MAIUSCULO, DIGITO, CARACTER_ESPECIAL})
     @NotBlank
+    @SegurancaSenha
     private String senhaNova;
 
 }
