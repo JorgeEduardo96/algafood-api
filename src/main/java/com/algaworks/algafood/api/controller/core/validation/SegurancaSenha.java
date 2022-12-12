@@ -38,6 +38,7 @@ public @interface SegurancaSenha {
             boolean temMinusculo = false;
             boolean temMaisculo = false;
             boolean temCaracterEspecial = false;
+            boolean maiorQue8Caracteres = value.length() > 8;
 
             for (int i = 0; i < value.length(); i++) {
                 if (!temDigito) {
@@ -65,6 +66,8 @@ public @interface SegurancaSenha {
                     return false;
                 } else if (requisito.equals(RequisitosSenha.DIGITO) && !temDigito) {
                     return false;
+                } else if (requisito.equals(RequisitosSenha.MAIOR_8_DIGITOS) && !maiorQue8Caracteres) {
+                    return false;
                 }
             }
 
@@ -76,7 +79,8 @@ public @interface SegurancaSenha {
         MAIUSCULO("Maiúsculo"),
         MINUSCULO("Minúsculo"),
         CARACTERE_ESPECIAL("Caractere Especial"),
-        DIGITO("Dígito");
+        DIGITO("Dígito"),
+        MAIOR_8_DIGITOS("Maior que 8 caracteres");
 
         private String descricao;
 

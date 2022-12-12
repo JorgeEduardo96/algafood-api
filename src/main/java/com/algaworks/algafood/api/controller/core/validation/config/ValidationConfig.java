@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.controller.core.validation;
+package com.algaworks.algafood.api.controller.core.validation.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

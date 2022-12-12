@@ -37,17 +37,15 @@ public class SesEnvioEmailService implements EnvioEmailService {
 
         String corpo = processarTemplate(mensagem);
 
-        SendEmailRequest sendEmailRequest =
-                new SendEmailRequest()
-                        .withDestination(new Destination().withToAddresses(destinatarios))
-                        .withMessage(
-                                new Message()
-                                        .withBody(
-                                                new Body()
-                                                        .withHtml(new Content().withCharset("UTF-8").withData(corpo)))
-                                        .withSubject(new Content().withCharset("UTF-8").withData(assunto)))
-                        .withSource(remetente);
-        return sendEmailRequest;
+        return new SendEmailRequest()
+                .withDestination(new Destination().withToAddresses(destinatarios))
+                .withMessage(
+                        new Message()
+                                .withBody(
+                                        new Body()
+                                                .withHtml(new Content().withCharset("UTF-8").withData(corpo)))
+                                .withSubject(new Content().withCharset("UTF-8").withData(assunto)))
+                .withSource(remetente);
     }
 
     protected String processarTemplate(Mensagem mensagem)  {
