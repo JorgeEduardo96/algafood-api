@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.GrupoInputDisassembler;
 import com.algaworks.algafood.api.assembler.GrupoModelAssembler;
+import com.algaworks.algafood.api.openapi.controller.GrupoControllerOpenApi;
 import com.algaworks.algafood.api.model.GrupoModel;
 import com.algaworks.algafood.api.model.input.GrupoInput;
 import com.algaworks.algafood.domain.model.Grupo;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class GrupoController {
+public class GrupoController implements GrupoControllerOpenApi {
 
     private final GrupoRepository repository;
 
@@ -36,9 +37,9 @@ public class GrupoController {
         return ResponseEntity.ok(this.grupoModelAssembler.toCollectionModel(this.repository.findAll()));
     }
 
-    @GetMapping("/{idGrupo}")
-    public GrupoModel buscar(@PathVariable Long idGrupo) {
-        return this.grupoModelAssembler.toModel(this.cadastroGrupoService.buscarOuFalhar(idGrupo));
+    @GetMapping("/{grupoId}")
+    public GrupoModel buscar(@PathVariable Long grupoId) {
+        return this.grupoModelAssembler.toModel(this.cadastroGrupoService.buscarOuFalhar(grupoId));
     }
 
     @PostMapping
@@ -49,9 +50,9 @@ public class GrupoController {
         ));
     }
 
-    @PutMapping("/{idGrupo}")
-    public GrupoModel atualizar(@PathVariable Long idGrupo, @RequestBody @Valid GrupoInput grupoInput) {
-        Grupo grupoAtual = this.cadastroGrupoService.buscarOuFalhar(idGrupo);
+    @PutMapping("/{grupoId}")
+    public GrupoModel atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput) {
+        Grupo grupoAtual = this.cadastroGrupoService.buscarOuFalhar(grupoId);
         this.grupoInputDisassembler.copyToDomainObject(grupoInput, grupoAtual);
         try {
             return this.grupoModelAssembler.toModel(this.cadastroGrupoService.salvar(grupoAtual));
@@ -60,10 +61,10 @@ public class GrupoController {
         }
     }
 
-    @DeleteMapping("/{idGrupo}")
+    @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long idGrupo) {
-        this.cadastroGrupoService.excluir(idGrupo);
+    public void remover(@PathVariable Long grupoId) {
+        this.cadastroGrupoService.excluir(grupoId);
     }
 
 }

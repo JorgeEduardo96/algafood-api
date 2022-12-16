@@ -1,5 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.EstadoInputDisassembler;
+import com.algaworks.algafood.api.assembler.EstadoModelAssembler;
+import com.algaworks.algafood.api.model.EstadoModel;
+import com.algaworks.algafood.api.model.input.EstadoInput;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
@@ -22,27 +26,31 @@ public class EstadoController {
 
 	private final CadastroEstadoService cadastroEstadoService;
 
+	private final EstadoModelAssembler assembler;
+
+	private final EstadoInputDisassembler disassembler;
+
 	@GetMapping
-	public ResponseEntity<List<Estado>> listar() {
-		return ResponseEntity.ok(this.repository.findAll());
+	public ResponseEntity<List<EstadoModel>> listar() {
+		return ResponseEntity.ok(assembler.toCollecionModel(this.repository.findAll()));
 	}
 
 	@GetMapping("/{idEstado}")
-	public Estado buscar(@PathVariable Long idEstado) {
-		return this.cadastroEstadoService.buscarOuFalhar(idEstado);
+	public EstadoModel buscar(@PathVariable Long idEstado) {
+		return assembler.toModel(this.cadastroEstadoService.buscarOuFalhar(idEstado));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Estado adicionar(@RequestBody @Valid Estado estado) {
-		return this.cadastroEstadoService.salvar(estado);
+	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+		return assembler.toModel(this.cadastroEstadoService.salvar(disassembler.toDomainObject(estadoInput)));
 	}
 
 	@PutMapping("/{estadoId}")
-	public Estado atualizar(@PathVariable Long estadoId, @RequestBody @Valid Estado estado) {
+	public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
 		Estado estadoAtual = this.cadastroEstadoService.buscarOuFalhar(estadoId);
-		BeanUtils.copyProperties(estado, estadoAtual, "id");
-		return this.cadastroEstadoService.salvar(estadoAtual);
+		BeanUtils.copyProperties(estadoInput, estadoAtual, "id");
+		return assembler.toModel(this.cadastroEstadoService.salvar(estadoAtual));
 	}
 
 	@DeleteMapping("/{estadoId}")

@@ -167,7 +167,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         String requisitos = requisitosSenha.stream().map(
                                 SegurancaSenha.RequisitosSenha::getDescricao).collect(Collectors.joining(", "));
 
-                       message = message.replaceAll(":requisitos", requisitos);
+                       message = message.replace(":requisitos", requisitos);
                     }
 
                     String name = objectError.getObjectName();

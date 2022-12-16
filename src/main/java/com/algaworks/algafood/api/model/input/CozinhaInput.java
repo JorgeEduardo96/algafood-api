@@ -4,20 +4,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class CidadeInput {
+public class CozinhaInput {
 
-    @ApiModelProperty(example = "Recife", required = true)
+    @ApiModelProperty(example = "Brasileira", required = true)
     @NotBlank
     private String nome;
-
-    @Valid
-    @NotNull
-    private EstadoIdInput estado;
 
 }

@@ -21,6 +21,7 @@
 		<jasperreports.version>6.16.0</jasperreports.version>
 		<aws-java-sdk-s3.version>1.12.336</aws-java-sdk-s3.version>
 		<aws-java-sdk-ses.version>1.12.119</aws-java-sdk-ses.version>
+		<springfox.version>3.0.0</springfox.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -115,7 +116,15 @@
 			<artifactId>aws-java-sdk-ses</artifactId>
 			<version>${aws-java-sdk-ses.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>${springfox.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

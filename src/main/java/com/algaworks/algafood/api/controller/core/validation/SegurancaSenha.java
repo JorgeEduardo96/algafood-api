@@ -31,29 +31,27 @@ public @interface SegurancaSenha {
         private List<RequisitosSenha> requisitosParaValidar;
 
         @Override
-        public boolean isValid(String value, ConstraintValidatorContext context) {
-            char[] caracteres = value.toCharArray();
-
+        public boolean isValid(String senha, ConstraintValidatorContext context) {
             boolean temDigito = false;
             boolean temMinusculo = false;
             boolean temMaisculo = false;
             boolean temCaracterEspecial = false;
-            boolean maiorQue8Caracteres = value.length() > 8;
+            boolean maiorQue8Caracteres = senha.length() > 8;
 
-            for (int i = 0; i < value.length(); i++) {
+            for(char ch: senha.toCharArray()) {
                 if (!temDigito) {
-                    temDigito = Character.isDigit(caracteres[i]);
+                    temDigito = Character.isDigit(ch);
                 }
                 if (!temMaisculo) {
-                    temMaisculo = Character.isUpperCase(caracteres[i]);
+                    temMaisculo = Character.isUpperCase(ch);
                 }
                 if (!temMinusculo) {
-                    temMinusculo = Character.isLowerCase(caracteres[i]);
+                    temMinusculo = Character.isLowerCase(ch);
                 }
                 if (!temCaracterEspecial) {
-                    temCaracterEspecial = !Character.isDigit(caracteres[i])
-                            && !Character.isLetter(caracteres[i])
-                            && !Character.isWhitespace(caracteres[i]);
+                    temCaracterEspecial = !Character.isDigit(ch)
+                            && !Character.isLetter(ch)
+                            && !Character.isWhitespace(ch);
                 }
             }
 

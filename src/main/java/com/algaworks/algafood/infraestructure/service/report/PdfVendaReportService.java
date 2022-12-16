@@ -20,10 +20,13 @@ public class PdfVendaReportService implements VendaReportService {
 
     private final VendaQueryService vendaQueryService;
 
+    private final String REPORT_PATH = "/relatorios/vendas-diarias.jasper";
+
     @Override
     public byte[] emitirVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
         try {
-            var inputStream = this.getClass().getResourceAsStream("/relatorios/vendas-diarias.jasper");
+
+            var inputStream = this.getClass().getResourceAsStream(REPORT_PATH);
 
             var parametros = new HashMap<String, Object>();
             parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
