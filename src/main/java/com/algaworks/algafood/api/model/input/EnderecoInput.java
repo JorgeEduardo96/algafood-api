@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class EnderecoInput {
+public class  EnderecoInput {
 
     @ApiModelProperty(example = "52041-370", required = true)
     @NotBlank

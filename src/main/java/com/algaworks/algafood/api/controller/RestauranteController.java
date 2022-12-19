@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.model.view.RestauranteView;
+import com.algaworks.algafood.api.openapi.controller.RestauranteControlerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.exception.CozinhaNaoEncontradaException;
@@ -25,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class RestauranteController {
+public class RestauranteController implements RestauranteControlerOpenApi {
 
 	private final RestauranteRepository repository;
 
@@ -35,13 +36,11 @@ public class RestauranteController {
 
 	private final RestauranteInputDisassembler disassembler;
 
-	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
 	public ResponseEntity<List<RestauranteModel>> listar() {
 		return ResponseEntity.ok(this.assembler.toCollectionModel(this.repository.findAll()));
 	}
 
-	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
 	public ResponseEntity<List<RestauranteModel>> listarApenasNomes() {
 		return ResponseEntity.ok(this.assembler.toCollectionModel(this.repository.findAll()));
