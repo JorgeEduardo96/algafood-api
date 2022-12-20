@@ -22,7 +22,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto",
+		produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class RestauranteProdutoFotoController {
 
@@ -50,7 +51,7 @@ public class RestauranteProdutoFotoController {
 		return assembler.toModel(catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId));
 	}
 
-	@GetMapping(produces = { MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE })
+	@GetMapping(produces = { MediaType.ALL_VALUE })
 	public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId,
 										@PathVariable Long produtoId,
 										@RequestHeader(name = "accept") String acceptHeader)

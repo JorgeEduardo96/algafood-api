@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.model.input;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,15 +13,19 @@ import java.math.BigDecimal;
 @Setter
 public class ProdutoInput {
 
+    @ApiModelProperty(example = "Carne de Sol", required = true)
     @NotBlank
     private String nome;
 
+    @ApiModelProperty(example = "500g de carne de sol, acompanhada de arroz e feijão", required = true)
     @NotBlank
     private String descricao;
 
+    @ApiModelProperty(example = "47.50", required = true)
     @PositiveOrZero
     private BigDecimal preco;
 
+    @ApiModelProperty(example = "true", required = true)
     @NotNull
     private boolean ativo;
 

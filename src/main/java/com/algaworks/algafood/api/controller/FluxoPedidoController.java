@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.openapi.controller.FluxoPedidoControllerOpenApi;
 import com.algaworks.algafood.domain.service.FluxoPedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/pedidos/{codigo}")
 @RequiredArgsConstructor
-public class FluxoPedidoController {
+public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 
     private final FluxoPedidoService fluxoPedidoService;
 

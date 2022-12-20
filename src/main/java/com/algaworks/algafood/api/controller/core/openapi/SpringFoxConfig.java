@@ -54,15 +54,6 @@ public class SpringFoxConfig {
                 .globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
                 .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
                 .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
-//                .globalRequestParameters(Collections.singletonList(
-//                        new RequestParameterBuilder()
-//                                .name("campos")
-//                                .description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
-//                                .in(ParameterType.QUERY)
-//                                .required(true)
-//                                .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
-//                                .build())
-//                )
                 .additionalModels(typeResolver.resolve(Problem.class))
                 .ignoredParameterTypes(ServletWebRequest.class)
                 .directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
@@ -79,7 +70,8 @@ public class SpringFoxConfig {
                         new Tag("Formas de Pagamento", "Gerencia as formas de pagamento"),
                         new Tag("Pedidos", "Gerencia os pedidos"),
                         new Tag("Restaurantes", "Gerencia os restaurantes"),
-                        new Tag("Estados", "Gerencia os estados"));
+                        new Tag("Estados", "Gerencia os estados"),
+                        new Tag("Produtos", "Gerencia os produtos"));
     }
 
     private List<Response> globalGetResponseMessages() {
