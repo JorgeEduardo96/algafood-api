@@ -4,6 +4,8 @@ import com.algaworks.algafood.domain.service.EnvioEmailService;
 import com.algaworks.algafood.infraestructure.service.email.FakeEnvioEmailService;
 import com.algaworks.algafood.infraestructure.service.email.SandboxEnvioEmailService;
 import com.algaworks.algafood.infraestructure.service.email.SesEnvioEmailService;
+import com.launchdarkly.sdk.LDContext;
+import com.launchdarkly.sdk.server.LDClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,16 +14,21 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class EmailConfig {
 
-    private final EmailProperties emailProperties;
+    private final LDClient ldClient;
 
     @Bean
     public EnvioEmailService envioEmailService() {
-        switch (emailProperties.getImpl()) {
-            case FAKE:
+
+        String emailFlag = ldClient.stringVariation("email-flag",
+                LDContext.builder("example-user-key")
+                                .name("Eduardo").build(), "ses");
+
+        switch (emailFlag) {
+            case "fake":
                 return new FakeEnvioEmailService();
-            case SES:
+            case "ses":
                 return new SesEnvioEmailService();
-            case SANDBOX:
+            case "sandbox":
                 return new SandboxEnvioEmailService();
             default:
                 return null;
