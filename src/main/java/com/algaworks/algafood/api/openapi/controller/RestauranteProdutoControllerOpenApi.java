@@ -7,7 +7,7 @@ import io.swagger.annotations.*;
 
 import java.util.List;
 
-@Api(tags = "Restaurantes")
+@Api(tags = "Produtos")
 public interface RestauranteProdutoControllerOpenApi {
 
     @ApiOperation("Lista os produtos associados ao restaurante")

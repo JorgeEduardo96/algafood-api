@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.assembler.PermissaoModelAssembler;
 import com.algaworks.algafood.api.model.GrupoModel;
 import com.algaworks.algafood.api.model.PermissaoModel;
 import com.algaworks.algafood.api.model.input.GrupoInput;
+import com.algaworks.algafood.api.openapi.controller.GrupoPermissaoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.exception.GrupoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.exception.NegocioException;
@@ -23,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/grupos/{idGrupo}/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class GrupoPermissaoController {
+public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 
     private final CadastroGrupoService cadastroGrupoService;
 

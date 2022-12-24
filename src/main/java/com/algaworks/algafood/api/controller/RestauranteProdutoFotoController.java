@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.FotoProdutoModelAssembler;
 import com.algaworks.algafood.api.model.FotoProdutoModel;
 import com.algaworks.algafood.api.model.input.FotoProdutoInput;
+import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -25,7 +27,7 @@ import java.util.List;
 @RequestMapping(path = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto",
 		produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-public class RestauranteProdutoFotoController {
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
 	private final CatalogoFotoProdutoService catalogoFotoProdutoService;
 	private final CadastroProdutoService cadastroProdutoService;
@@ -34,7 +36,8 @@ public class RestauranteProdutoFotoController {
 
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-										  @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+										  @Valid FotoProdutoInput fotoProdutoInput,
+										  @RequestPart(required = true)MultipartFile arquivo) throws IOException {
 		FotoProduto fotoProduto = new FotoProduto();
 		fotoProduto.setDescricao(fotoProdutoInput.getDescricao());
 		fotoProduto.setContentType(fotoProdutoInput.getArquivo().getContentType());
