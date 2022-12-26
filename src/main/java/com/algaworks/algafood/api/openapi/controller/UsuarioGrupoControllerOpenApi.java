@@ -15,7 +15,7 @@ public interface UsuarioGrupoControllerOpenApi {
             @ApiResponse(code = 400, message = "ID do usuário inválido", response = Problem.class),
             @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
-    ResponseEntity<List<GrupoModel>> listar(@ApiParam(value = "ID do usuário", example = "1", required = true)
+    List<GrupoModel> listar(@ApiParam(value = "ID do usuário", example = "1", required = true)
                                             Long usuarioId);
 
     @ApiOperation("Associação de usuário com grupo")

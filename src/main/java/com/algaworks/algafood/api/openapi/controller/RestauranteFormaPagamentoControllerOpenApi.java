@@ -13,7 +13,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Restaurante não encontrado")
     })
-    ResponseEntity<List<FormaPagamentoModel>> listar(@ApiParam(value = "ID do restaurante", example = "1",
+    List<FormaPagamentoModel> listar(@ApiParam(value = "ID do restaurante", example = "1",
             required = true) Long restauranteId);
 
     @ApiOperation(value = "Desassocia uma forma de pagamento ao restaurante de código informado")

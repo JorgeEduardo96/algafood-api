@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,8 +31,8 @@ public class EstadoController implements EstadoControllerOpenApi {
 	private final EstadoInputDisassembler disassembler;
 
 	@GetMapping
-	public ResponseEntity<List<EstadoModel>> listar() {
-		return ResponseEntity.ok(assembler.toCollecionModel(this.repository.findAll()));
+	public List<EstadoModel> listar() {
+		return assembler.toCollecionModel(this.repository.findAll());
 	}
 
 	@GetMapping("/{idEstado}")

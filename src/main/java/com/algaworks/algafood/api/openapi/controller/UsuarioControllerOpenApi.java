@@ -6,7 +6,6 @@ import com.algaworks.algafood.api.model.input.SenhaInput;
 import com.algaworks.algafood.api.model.input.UsuarioInput;
 import com.algaworks.algafood.api.model.input.UsuarioSemSenhaInput;
 import io.swagger.annotations.*;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
 public interface UsuarioControllerOpenApi {
 
     @ApiOperation("Lista os usuários")
-    ResponseEntity<List<UsuarioModel>> listar();
+    List<UsuarioModel> listar();
 
     @ApiOperation("Busca um usuário")
     @ApiResponses({

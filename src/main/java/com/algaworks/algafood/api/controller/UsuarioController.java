@@ -14,7 +14,6 @@ import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,8 +35,8 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     private final UsuarioSemSenhaInputDisassembler usuarioSemSenhaInputDisassembler;
 
     @GetMapping
-    public ResponseEntity<List<UsuarioModel>> listar() {
-        return ResponseEntity.ok(this.assembler.toCollectionModel(usuarioRepository.findAll()));
+    public List<UsuarioModel> listar() {
+        return this.assembler.toCollectionModel(usuarioRepository.findAll());
     }
 
     @GetMapping("/{usuarioId}")

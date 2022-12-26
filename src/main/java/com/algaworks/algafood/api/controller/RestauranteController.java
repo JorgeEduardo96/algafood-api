@@ -4,7 +4,6 @@ import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
-import com.algaworks.algafood.api.model.view.RestauranteView;
 import com.algaworks.algafood.api.openapi.controller.RestauranteControlerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.exception.CidadeNaoEncontradaException;
@@ -13,11 +12,9 @@ import com.algaworks.algafood.domain.model.exception.NegocioException;
 import com.algaworks.algafood.domain.model.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,13 +34,13 @@ public class RestauranteController implements RestauranteControlerOpenApi {
 	private final RestauranteInputDisassembler disassembler;
 
 	@GetMapping
-	public ResponseEntity<List<RestauranteModel>> listar() {
-		return ResponseEntity.ok(this.assembler.toCollectionModel(this.repository.findAll()));
+	public List<RestauranteModel> listar() {
+		return this.assembler.toCollectionModel(this.repository.findAll());
 	}
 
 	@GetMapping(params = "projecao=apenas-nome")
-	public ResponseEntity<List<RestauranteModel>> listarApenasNomes() {
-		return ResponseEntity.ok(this.assembler.toCollectionModel(this.repository.findAll()));
+	public List<RestauranteModel> listarApenasNomes() {
+		return this.assembler.toCollectionModel(this.repository.findAll());
 	}
 
 	@GetMapping("/{restauranteId}")

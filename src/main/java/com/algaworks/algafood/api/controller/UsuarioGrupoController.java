@@ -8,7 +8,6 @@ import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,10 +22,10 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
     private final GrupoModelAssembler assembler;
 
     @GetMapping
-    public ResponseEntity<List<GrupoModel>> listar(@PathVariable Long usuarioId) {
+    public List<GrupoModel> listar(@PathVariable Long usuarioId) {
         Usuario usuario = cadastroUsuarioService.buscarOuFalhar(usuarioId);
 
-        return ResponseEntity.ok(this.assembler.toCollectionModel(usuario.getGrupos()));
+        return this.assembler.toCollectionModel(usuario.getGrupos());
     }
 
     @PutMapping("/{grupoId}")

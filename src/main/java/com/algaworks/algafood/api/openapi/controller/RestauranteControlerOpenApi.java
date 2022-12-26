@@ -7,7 +7,6 @@ import com.algaworks.algafood.api.model.view.RestauranteView;
 import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.*;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -20,11 +19,11 @@ public interface RestauranteControlerOpenApi {
             @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome", name = "projecao",
                     paramType = "query", type = "string")
     })
-    ResponseEntity<List<RestauranteModel>> listar();
+    List<RestauranteModel> listar();
 
     @JsonView(RestauranteView.ApenasNome.class)
     @ApiOperation(value = "Lista os restaurantes", hidden = true)
-    ResponseEntity<List<RestauranteModel>> listarApenasNomes();
+    List<RestauranteModel> listarApenasNomes();
 
     @ApiOperation("Busca um restaurante por ID")
     RestauranteModel buscar(@ApiParam(value="ID de um restaurante", example = "1", required = true) Long restauranteId);

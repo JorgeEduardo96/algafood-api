@@ -1,25 +1,15 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.FormaPagamentoModelAssembler;
-import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
-import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
-import com.algaworks.algafood.api.model.RestauranteModel;
-import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.model.exception.CidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.model.exception.CozinhaNaoEncontradaException;
-import com.algaworks.algafood.domain.model.exception.NegocioException;
-import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,11 +22,10 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	private final FormaPagamentoModelAssembler assembler;
 
 	@GetMapping
-	public ResponseEntity<List<FormaPagamentoModel>> listar(@PathVariable Long restauranteId) {
+	public List<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
-		return ResponseEntity.ok(this.assembler.toCollectionModel(
-				restaurante.getFormasPagamento()));
+		return this.assembler.toCollectionModel(restaurante.getFormasPagamento());
 	}
 
 	@DeleteMapping("/{formaPagamentoId}")
