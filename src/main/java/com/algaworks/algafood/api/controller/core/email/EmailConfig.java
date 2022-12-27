@@ -21,7 +21,7 @@ public class EmailConfig {
 
         String emailFlag = ldClient.stringVariation("email-flag",
                 LDContext.builder("example-user-key")
-                                .name("Eduardo").build(), "ses");
+                                .name("Jorge").build(), "ses");
 
         switch (emailFlag) {
             case "fake":
