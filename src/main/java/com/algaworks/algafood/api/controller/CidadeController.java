@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.ResourceUriHelper;
 import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.assembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.model.CidadeModel;
@@ -19,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static com.algaworks.algafood.api.ResourceUriHelper.addUriInResponseHeader;
 
 @RestController
 @RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,51 +35,22 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	@GetMapping
 	public CollectionModel<CidadeModel> listar() {
-		List<CidadeModel> cidadeModels = this.assembler.toCollectionModel(this.repository.findAll());
-
-		cidadeModels.forEach(cidadeModel -> {
-			cidadeModel.add(linkTo(methodOn(CidadeController.class)
-					.buscar(cidadeModel.getId())).withSelfRel());
-
-			cidadeModel.add(linkTo(methodOn(CidadeController.class)
-					.listar()).withRel("cidades"));
-
-			cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-					.buscar(cidadeModel.getEstado().getId())).withSelfRel());
-		});
-
-		CollectionModel collectionModel = CollectionModel.of(cidadeModels);
-
-		collectionModel.add(linkTo(CidadeController.class).withSelfRel());
-
-		return collectionModel;
+		return this.assembler.toCollectionModel(this.repository.findAll());
 	}
 
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
-		CidadeModel cidadeModel = this.assembler.toModel(this.cadastroCidadeService.buscarOuFalhar(cidadeId));
-
-		cidadeModel.add(linkTo(methodOn(CidadeController.class)
-				.buscar(cidadeModel.getId())).withSelfRel());
-
-		cidadeModel.add(linkTo(methodOn(CidadeController.class)
-				.listar()).withRel("cidades"));
-
-		cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-				.buscar(cidadeModel.getEstado().getId())).withSelfRel());
-
-		return cidadeModel;
+		return this.assembler.toModel(this.cadastroCidadeService.buscarOuFalhar(cidadeId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-
 			Cidade cidade = this.cadastroCidadeService.salvar(disassembler.toDomainObject(cidadeInput));
 			CidadeModel cidadeModel = assembler.toModel(cidade);
 
-			ResourceUriHelper.addUriInResponseHeader(cidadeModel.getId());
+			addUriInResponseHeader(cidadeModel.getId());
 
 			return cidadeModel;
 		} catch (EstadoNaoEncontradoException ex) {

@@ -10,12 +10,12 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,8 +31,8 @@ public class EstadoController implements EstadoControllerOpenApi {
 	private final EstadoInputDisassembler disassembler;
 
 	@GetMapping
-	public List<EstadoModel> listar() {
-		return assembler.toCollecionModel(this.repository.findAll());
+	public CollectionModel<EstadoModel> listar() {
+		return assembler.toCollectionModel(this.repository.findAll());
 	}
 
 	@GetMapping("/{idEstado}")
