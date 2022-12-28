@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.domain.model.*;
+import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.exception.NegocioException;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import lombok.RequiredArgsConstructor;

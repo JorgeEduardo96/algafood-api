@@ -1,9 +1,9 @@
 package com.algaworks.algafood.infraestructure.repository;
 
-import com.algaworks.algafood.infraestructure.repository.spec.RestauranteSpecs;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.query.RestauranteRepositoryQueries;
+import com.algaworks.algafood.infraestructure.repository.spec.RestauranteSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;

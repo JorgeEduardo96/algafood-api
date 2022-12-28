@@ -7,8 +7,6 @@ import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import static com.algaworks.algafood.api.controller.core.validation.SegurancaSenha.RequisitosSenha.*;
-
 @Getter
 @Setter
 public class UsuarioInput {
