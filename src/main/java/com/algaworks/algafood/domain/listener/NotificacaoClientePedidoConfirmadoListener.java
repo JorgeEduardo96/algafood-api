@@ -7,8 +7,6 @@ import com.algaworks.algafood.domain.service.EnvioEmailService;
 import com.algaworks.algafood.infraestructure.service.email.FakeEnvioEmailService;
 import com.algaworks.algafood.infraestructure.service.email.SandboxEnvioEmailService;
 import com.algaworks.algafood.infraestructure.service.email.SesEnvioEmailService;
-import com.launchdarkly.sdk.LDContext;
-import com.launchdarkly.sdk.server.LDClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
