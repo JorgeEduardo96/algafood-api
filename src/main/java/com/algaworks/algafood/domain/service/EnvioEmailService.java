@@ -12,7 +12,6 @@ public interface EnvioEmailService {
 
     void enviar(Mensagem mensagem);
 
-
     @Builder
     @Getter
     class Mensagem {

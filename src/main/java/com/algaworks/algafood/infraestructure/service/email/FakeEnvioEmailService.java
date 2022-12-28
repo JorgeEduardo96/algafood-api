@@ -1,9 +1,11 @@
 package com.algaworks.algafood.infraestructure.service.email;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-public class FakeEnvioEmailService extends SesEnvioEmailService {
+@Component
+public class FakeEnvioEmailService extends EnvioEmailServiceImpl {
 
     @Override
     public void enviar(Mensagem mensagem) {

@@ -25,8 +25,13 @@ public class EmailProperties {
 
     public enum TipoEnvioEmail {
 
-        SES, FAKE, SANDBOX
+        SES("ses"), FAKE("fake"), SANDBOX("sandbox");
 
+        private String label;
+
+        TipoEnvioEmail(String label) {
+            this.label = label;
+        }
     }
 
 }
