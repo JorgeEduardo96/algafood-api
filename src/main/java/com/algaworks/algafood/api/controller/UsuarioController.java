@@ -35,17 +35,20 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 
     private final UsuarioSemSenhaInputDisassembler usuarioSemSenhaInputDisassembler;
 
+    @Override
     @GetMapping
     public CollectionModel<UsuarioModel> listar() {
         return this.assembler.toCollectionModel(usuarioRepository.findAll());
     }
 
+    @Override
     @GetMapping("/{usuarioId}")
     public UsuarioModel buscar(@PathVariable Long usuarioId) {
         Usuario usuario = this.cadastroUsuarioService.buscarOuFalhar(usuarioId);
         return this.assembler.toModel(usuario);
     }
 
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioModel adicionar(@RequestBody @Valid UsuarioInput usuarioInput) {
@@ -54,6 +57,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         ));
     }
 
+    @Override
     @PutMapping("/{usuarioId}")
     public UsuarioModel atualizar(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioSemSenhaInput usuarioSemSenhaInput) {
         Usuario usuarioAtual = this.cadastroUsuarioService.buscarOuFalhar(usuarioId);
@@ -61,12 +65,14 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return this.assembler.toModel(this.cadastroUsuarioService.salvar(usuarioAtual));
     }
 
+    @Override
     @PutMapping("/{usuarioId}/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senhaInput) {
         this.cadastroUsuarioService.alterarSenha(usuarioId, senhaInput);
     }
 
+    @Override
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long usuarioId) {

@@ -49,6 +49,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
     private final PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
+    @Override
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
         Pageable pageableTraduzido = traduzirPageable(pageable);
@@ -60,11 +61,13 @@ public class PedidoController implements PedidoControllerOpenApi {
                 .toModel(new PageWrapper<>(pedidosPage, pageable), pedidoResumoModelAssembler);
     }
 
+    @Override
     @GetMapping("/{codigo}")
     public PedidoModel buscar(@PathVariable String codigo) {
         return assembler.toModel(buscaPedidoService.buscarOuFalhar(codigo));
     }
 
+    @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel salvar(@RequestBody @Valid PedidoInput pedidoInput) {

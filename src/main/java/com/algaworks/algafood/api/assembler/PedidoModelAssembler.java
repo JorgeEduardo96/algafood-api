@@ -1,20 +1,14 @@
 package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.AlgaLinks;
-import com.algaworks.algafood.api.controller.*;
+import com.algaworks.algafood.api.controller.PedidoController;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.model.StatusPedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.TemplateVariable;
-import org.springframework.hateoas.TemplateVariables;
-import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pedido, PedidoModel> {
@@ -35,6 +29,15 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
         pedidoModel.add(algaLinks.linkToPedidosModel());
 
+        if (pedido.getStatus().podeAlterarPara(StatusPedido.CONFIRMADO))
+            pedidoModel.add(algaLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+
+        if (pedido.getStatus().podeAlterarPara(StatusPedido.ENTREGUE))
+            pedidoModel.add(algaLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));
+
+        if (pedido.getStatus().podeAlterarPara(StatusPedido.CANCELADO))
+            pedidoModel.add(algaLinks.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
+
         pedidoModel.getRestaurante().add(
                 algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
@@ -47,10 +50,8 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
         pedidoModel.getEnderecoEntrega().getCidade().add(
                 algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
 
-        pedidoModel.getItens().forEach(item -> {
-            item.add(algaLinks.linkToProduto(
-                    pedidoModel.getRestaurante().getId(), item.getProdutoId(), "produto"));
-        });
+        pedidoModel.getItens().forEach(item -> item.add(algaLinks.linkToProduto(
+                pedidoModel.getRestaurante().getId(), item.getProdutoId(), "produto")));
 
         return pedidoModel;
     }

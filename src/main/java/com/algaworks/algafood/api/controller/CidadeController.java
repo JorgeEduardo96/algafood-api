@@ -33,16 +33,19 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	private final CidadeInputDisassembler disassembler;
 
+	@Override
 	@GetMapping
 	public CollectionModel<CidadeModel> listar() {
 		return this.assembler.toCollectionModel(this.repository.findAll());
 	}
 
+	@Override
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
 		return this.assembler.toModel(this.cadastroCidadeService.buscarOuFalhar(cidadeId));
 	}
 
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -58,6 +61,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		}
 	}
 
+	@Override
 	@PutMapping("/{cidadeId}")
 	public CidadeModel atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput) {
 		Cidade cidadeAtual = this.cadastroCidadeService.buscarOuFalhar(cidadeId);
@@ -69,6 +73,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		}
 	}
 
+	@Override
 	@DeleteMapping("/{cidadeId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long cidadeId) {

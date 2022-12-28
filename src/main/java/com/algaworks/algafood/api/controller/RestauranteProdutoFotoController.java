@@ -34,6 +34,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	private final FotoStorageService fotoStorageService;
 	private final FotoProdutoModelAssembler assembler;
 
+	@Override
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 										  @Valid FotoProdutoInput fotoProdutoInput,
@@ -49,11 +50,13 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 				fotoProdutoInput.getArquivo().getInputStream()));
 	}
 
+	@Override
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		return assembler.toModel(catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId));
 	}
 
+	@Override
 	@GetMapping(produces = { MediaType.ALL_VALUE })
 	public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId,
 										@PathVariable Long produtoId,
@@ -92,6 +95,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 			throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas);
 	}
 
+	@Override
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId) {

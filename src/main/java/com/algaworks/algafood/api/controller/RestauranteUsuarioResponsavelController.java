@@ -22,6 +22,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 
 	private final AlgaLinks algaLinks;
 
+	@Override
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
 		return usuarioModelAssembler.toCollectionModel(
@@ -30,12 +31,14 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 				.add(algaLinks.linkToResponsaveisRestaurante(restauranteId));
 	}
 
+	@Override
 	@PutMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
 		cadastroRestauranteService.associarResponsavel(restauranteId, usuarioId);
 	}
 
+	@Override
 	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {

@@ -32,6 +32,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 
 	private final ProdutoRepository repository;
 
+	@Override
 	@GetMapping
 	public List<ProdutoModel> listar(@PathVariable Long restauranteId,
 									 @RequestParam(required = false) boolean incluirInativos) {
@@ -43,6 +44,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		return assembler.toCollectionModel(todosProdutos);
 	}
 
+	@Override
 	@GetMapping("/{produtoId}")
 	public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProdutoService.buscarOuFalhar(restauranteId, produtoId);
@@ -50,6 +52,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		return assembler.toModel(produto);
 	}
 
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoModel salvar(@PathVariable Long restauranteId, @RequestBody ProdutoInput produtoInput) {
@@ -63,6 +66,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
 		return this.assembler.toModel(produto);
 	}
 
+	@Override
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 								  @RequestBody ProdutoInput produtoInput) {

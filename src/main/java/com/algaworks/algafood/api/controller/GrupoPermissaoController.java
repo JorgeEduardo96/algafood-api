@@ -20,17 +20,20 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
 
     private final PermissaoModelAssembler assembler;
 
+    @Override
     @GetMapping
     public List<PermissaoModel> listar(@PathVariable Long idGrupo) {
         return this.assembler.toCollectionModel(this.cadastroGrupoService.buscarOuFalhar(idGrupo).getPermissoes());
     }
 
+    @Override
     @PutMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void incluirPermissao(@PathVariable Long idGrupo, @PathVariable Long permissaoId) {
         this.cadastroGrupoService.incluirPermissao(idGrupo, permissaoId);
     }
 
+    @Override
     @DeleteMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long idGrupo, @PathVariable Long permissaoId) {
