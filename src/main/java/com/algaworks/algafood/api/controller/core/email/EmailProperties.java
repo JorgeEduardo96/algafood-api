@@ -18,6 +18,9 @@ public class EmailProperties {
     @NotNull
     private String remetente;
 
+    @NotNull
+    private String featureFlagKey;
+
     private TipoEnvioEmail impl = TipoEnvioEmail.FAKE;
 
     @NotNull

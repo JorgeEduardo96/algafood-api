@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.listener;
 
+import com.algaworks.algafood.api.controller.core.email.EmailProperties;
 import com.algaworks.algafood.api.controller.core.launchdarkly.LaunchDarklyClient;
 import com.algaworks.algafood.domain.event.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.service.EnvioEmailService;
@@ -25,35 +26,36 @@ public class NotificacaoClientePedidoConfirmadoListener {
 
     private final LaunchDarklyClient launchDarklyClient;
 
+    private final EmailProperties emailProperties;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void aoConfirmarPedido(PedidoConfirmadoEvent event) {
+        if (launchDarklyClient.getFeatureFlagBooleanValue(emailProperties.getFeatureFlagKey())) {
+            TipoEnvioEmail flagEmail =
+                    TipoEnvioEmail
+                            .valueOf(launchDarklyClient.getFeatureFlagStringValue("email-flag").toUpperCase());
 
-        TipoEnvioEmail flagEmail =
-                TipoEnvioEmail
-                        .valueOf(launchDarklyClient.getFeatureFlagStringValue("email-flag").toUpperCase());
+            var mensagem = EnvioEmailService.Mensagem.builder()
+                    .assunto(event.getPedido().getRestaurante().getNome() + " - Pedido Confirmado")
+                    .corpo("pedido-confirmado.html")
+                    .variavel("pedido", event.getPedido())
+                    .destinatario(event.getPedido().getCliente().getEmail())
+                    .build();
 
-        var mensagem = EnvioEmailService.Mensagem.builder()
-                .assunto(event.getPedido().getRestaurante().getNome() + " - Pedido Confirmado")
-                .corpo("pedido-confirmado.html")
-                .variavel("pedido", event.getPedido())
-                .destinatario(event.getPedido().getCliente().getEmail())
-                .build();
-
-        switch (flagEmail) {
-            case SES: {
-                envioEmailService.enviar(mensagem);
-                break;
-            }
-            case SANDBOX: {
-                sandboxEnvioEmailService.enviar(mensagem);
-                break;
-            } default: {
-                fakeEnvioEmailService.enviar(mensagem);
-                break;
+            switch (flagEmail) {
+                case SES: {
+                    envioEmailService.enviar(mensagem);
+                    break;
+                }
+                case SANDBOX: {
+                    sandboxEnvioEmailService.enviar(mensagem);
+                    break;
+                } default: {
+                    fakeEnvioEmailService.enviar(mensagem);
+                    break;
+                }
             }
         }
-
     }
 
 }
