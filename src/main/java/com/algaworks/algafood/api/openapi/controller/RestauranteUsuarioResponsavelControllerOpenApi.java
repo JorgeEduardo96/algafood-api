@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.openapi.controller;
 import com.algaworks.algafood.api.model.UsuarioModel;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Restaurantes")
 public interface RestauranteUsuarioResponsavelControllerOpenApi {
@@ -18,11 +19,11 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Restaurante ou usuário não encontrado")
     })
-    void ativar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
-                @ApiParam(value="ID do usuário", example = "1", required = true) Long usuarioId);
+    ResponseEntity<Void> associar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
+                  @ApiParam(value="ID do usuário", example = "1", required = true) Long usuarioId);
 
     @ApiOperation("Inativa um restaurante")
-    void inativar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
-                  @ApiParam(value="ID do usuário", example = "1", required = true) Long usuarioId);
+    ResponseEntity<Void> desassociar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
+                     @ApiParam(value="ID do usuário", example = "1", required = true) Long usuarioId);
 
 }

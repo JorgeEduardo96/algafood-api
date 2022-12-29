@@ -58,6 +58,16 @@ public class AlgaLinks {
         return linkToRestaurante(restauranteId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToRestauranteFormaPagamentoDesassociacao(Long restauranteId, Long formaPagamentoId, String rel) {
+        return linkTo(methodOn(RestauranteFormaPagamentoController.class).desassociar(restauranteId, formaPagamentoId)
+        ).withRel(rel);
+    }
+
+    public Link linkToRestauranteFormaPagamentoAssociacao(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteFormaPagamentoController.class).desassociar(restauranteId, null)
+        ).withRel(rel);
+    }
+
     public Link linkToAbrirRestaurante(Long restauranteId, String rel) {
         return linkTo(methodOn(RestauranteController.class).abrir(restauranteId)).withRel(rel);
     }
@@ -72,6 +82,18 @@ public class AlgaLinks {
 
     public Link linkToInativarRestaurante(Long restauranteId, String rel) {
         return linkTo(methodOn(RestauranteController.class).inativar(restauranteId)).withRel(rel);
+    }
+
+    public Link linkToRestauranteResponsavelDesassociacao(
+            Long restauranteId, Long usuarioId, String rel) {
+
+        return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+                .desassociar(restauranteId, usuarioId)).withRel(rel);
+    }
+
+    public Link linkToRestauranteResponsavelAssociacao(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+                .associar(restauranteId, null)).withRel(rel);
     }
 
     public Link linkToUsuario(Long usuarioId, String rel) {
@@ -160,6 +182,15 @@ public class AlgaLinks {
 
     public Link linkToProduto(Long restauranteId, Long produtoId) {
         return linkToProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToProdutos(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteProdutoController.class)
+                .listar(restauranteId, null)).withRel(rel);
+    }
+
+    public Link linkToProdutos(Long restauranteId) {
+        return linkToProdutos(restauranteId, IanaLinkRelations.SELF.value());
     }
 
     public Link linkToCozinhas(String rel) {

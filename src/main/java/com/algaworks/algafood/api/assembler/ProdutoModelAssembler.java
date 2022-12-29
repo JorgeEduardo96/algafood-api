@@ -1,26 +1,41 @@
 package com.algaworks.algafood.api.assembler;
 
+import com.algaworks.algafood.api.AlgaLinks;
+import com.algaworks.algafood.api.controller.RestauranteProdutoController;
 import com.algaworks.algafood.api.model.ProdutoModel;
 import com.algaworks.algafood.domain.model.Produto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
-public class ProdutoModelAssembler {
+public class ProdutoModelAssembler
+        extends RepresentationModelAssemblerSupport<Produto, ProdutoModel> {
 
-    private final ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
+    public ProdutoModelAssembler() {
+        super(RestauranteProdutoController.class, ProdutoModel.class);
+    }
+
+    @Override
     public ProdutoModel toModel(Produto produto) {
-        return modelMapper.map(produto, ProdutoModel.class);
-    }
+        ProdutoModel produtoModel = createModelWithId(
+                produto.getId(), produto, produto.getRestaurante().getId());
 
-    public List<ProdutoModel> toCollectionModel(List<Produto> produtos) {
-        return produtos.stream().map(this::toModel).collect(Collectors.toList());
-    }
+        modelMapper.map(produto, produtoModel);
 
+        produtoModel.add(algaLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+
+        return produtoModel;
+    }
 }

@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import io.swagger.annotations.*;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Restaurantes")
 public interface RestauranteFormaPagamentoControllerOpenApi {
@@ -17,12 +18,12 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
                     Long restauranteId);
 
     @ApiOperation(value = "Desassocia uma forma de pagamento ao restaurante de código informado")
-    void desassociar(@ApiParam(value = "ID do restaurante", example = "1",
+    ResponseEntity<Void> desassociar(@ApiParam(value = "ID do restaurante", example = "1",
             required = true) Long restauranteId, @ApiParam(value = "ID da forma de pagamento", example = "1",
             required = true) Long formaPagamentoId);
 
     @ApiOperation("Associa uma forma de pagamento ao restaurante de código informado")
-    void associar(@ApiParam(value = "ID do restaurante", example = "1",
+    ResponseEntity<Void> associar(@ApiParam(value = "ID do restaurante", example = "1",
             required = true) Long restauranteId, @ApiParam(value = "ID da forma de pagamento", example = "1",
             required = true) Long formaPagamentoId);
 
