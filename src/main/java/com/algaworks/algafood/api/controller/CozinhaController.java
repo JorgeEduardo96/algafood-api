@@ -9,6 +9,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(path = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Slf4j
 public class CozinhaController implements CozinhaControllerOpenApi {
 
 	private final CozinhaModelAssembler assembler;
@@ -38,6 +40,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@Override
 	@GetMapping
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 2) Pageable pageable) {
+		log.info("Consultando cozinhas com paginas de {} registros...", pageable.getPageSize());
+
 		return pagedResourcesAssembler.toModel(repository.findAll(pageable), assembler);
 	}
 

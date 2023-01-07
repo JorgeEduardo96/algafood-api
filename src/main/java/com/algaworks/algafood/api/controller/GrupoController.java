@@ -11,6 +11,7 @@ import com.algaworks.algafood.domain.model.exception.NegocioException;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,10 @@ public class GrupoController implements GrupoControllerOpenApi {
 
     @Override
     @GetMapping
-    public List<GrupoModel> listar() {
-        return this.grupoModelAssembler.toCollectionModel(this.repository.findAll());
+    public CollectionModel<GrupoModel> listar() {
+        List<Grupo> todosGrupos = repository.findAll();
+
+        return grupoModelAssembler.toCollectionModel(todosGrupos);
     }
 
     @Override
