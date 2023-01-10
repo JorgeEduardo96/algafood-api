@@ -1,6 +1,6 @@
 package com.algaworks.algafood.infraestructure.service.email;
 
-import com.algaworks.algafood.api.controller.core.email.EmailProperties;
+import com.algaworks.algafood.core.email.EmailProperties;
 import com.amazonaws.services.simpleemail.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 

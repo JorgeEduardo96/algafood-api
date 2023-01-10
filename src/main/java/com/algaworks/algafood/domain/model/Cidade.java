@@ -1,6 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
-import com.algaworks.algafood.api.controller.core.validation.Groups;
+import com.algaworks.algafood.core.validation.Groups;
 import lombok.*;
 
 import javax.persistence.*;

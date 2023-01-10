@@ -1,6 +1,6 @@
 package com.algaworks.algafood.infraestructure.service.storage;
 
-import com.algaworks.algafood.api.controller.core.storage.StorageProperties;
+import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.FotoStorageService;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

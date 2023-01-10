@@ -1,6 +1,6 @@
 package com.algaworks.algafood.infraestructure.service.email;
 
-import com.algaworks.algafood.api.controller.core.email.EmailProperties;
+import com.algaworks.algafood.core.email.EmailProperties;
 import com.algaworks.algafood.domain.service.EnvioEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;

@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
-import com.algaworks.algafood.api.controller.core.validation.SegurancaSenha;
-import com.algaworks.algafood.api.controller.core.validation.exception.ValidacaoException;
+import com.algaworks.algafood.core.validation.SegurancaSenha;
+import com.algaworks.algafood.core.validation.exception.ValidacaoException;
 import com.algaworks.algafood.domain.model.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.model.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.exception.NegocioException;

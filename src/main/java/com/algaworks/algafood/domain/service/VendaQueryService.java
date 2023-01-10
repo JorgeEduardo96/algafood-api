@@ -1,6 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.api.model.dto.VendaDiaria;
+import com.algaworks.algafood.api.v1.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 
 import java.util.List;
