@@ -34,8 +34,8 @@ public interface RestauranteProdutoControllerOpenApi {
             @ApiResponse(code = 201, message = "Produto cadastrado"),
             @ApiResponse(code = 404, message = "Restaurante não encontrada", response = Problem.class)
     })
-    ProdutoModel salvar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
-                        @ApiParam(name="corpo", value="Representação de um novo produto", required = true)
+    ProdutoModel adicionar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
+                           @ApiParam(name="corpo", value="Representação de um novo produto", required = true)
                                 ProdutoInput produtoInput);
 
     @ApiOperation("Atualiza um produto no restaurante com o código informado")

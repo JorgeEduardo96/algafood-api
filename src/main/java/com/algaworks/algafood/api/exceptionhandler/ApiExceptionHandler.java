@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -220,26 +221,36 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NegocioException.class)
     public ResponseEntity<?> handleNegocioException(NegocioException ex, WebRequest request) {
-
         HttpStatus status = HttpStatus.BAD_REQUEST;
         String detail = ex.getMessage();
         Problem problem = createProblemBuilder(status, ProblemType.ERRO_NEGOCIO, detail)
                 .userMessage(detail)
                 .build();
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(EntidadeEmUsoException.class)
     public ResponseEntity<?> handleEntidadeEmUsoException(EntidadeEmUsoException ex, WebRequest request) {
-
         HttpStatus status = HttpStatus.CONFLICT;
         String detail = ex.getMessage();
         Problem problem = createProblemBuilder(status, ProblemType.ENTIDADE_EM_USO, detail)
                 .userMessage(detail)
                 .build();
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.CONFLICT, request);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        String detail = ex.getMessage();
+        Problem problem = createProblemBuilder(status, ProblemType.ACESSO_NEGADO, detail)
+                .userMessage(detail)
+                .userMessage("Você não possui permissão para executar essa operação")
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @Override

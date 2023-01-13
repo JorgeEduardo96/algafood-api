@@ -8,6 +8,7 @@ import com.algaworks.algafood.domain.model.exception.UsuarioNaoEncontradoExcepti
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,8 @@ public class CadastroUsuarioService {
 
     private final CadastroGrupoService cadastroGrupoService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public Usuario salvar(Usuario usuario) {
         this.usuarioRepository.detach(usuario);
@@ -31,6 +34,8 @@ public class CadastroUsuarioService {
             throw new NegocioException(String.format("Já existe um usuário cadastrado com o e-mail %s",
                     usuario.getEmail()));
         }
+
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 
         return this.usuarioRepository.save(usuario);
     }
@@ -53,10 +58,10 @@ public class CadastroUsuarioService {
     @Transactional
     public void alterarSenha(Long usuarioId, SenhaInput senhaInput) {
         Usuario usuarioCadastrado = buscarOuFalhar(usuarioId);
-        if (usuarioCadastrado.senhaNaoCoincidem(senhaInput.getSenhaAtual())) {
+        if (!passwordEncoder.matches(senhaInput.getSenhaAtual(), usuarioCadastrado.getSenha()))
             throw new NegocioException("Senha atual informada não coincide com a senha do usuário.");
-        }
-        usuarioCadastrado.setSenha(senhaInput.getSenhaNova());
+
+        usuarioCadastrado.setSenha(passwordEncoder.encode(senhaInput.getSenhaNova()));
     }
 
     @Transactional

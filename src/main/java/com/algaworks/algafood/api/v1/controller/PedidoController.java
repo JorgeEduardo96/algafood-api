@@ -9,6 +9,8 @@ import com.algaworks.algafood.api.v1.model.PedidoModel;
 import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
 import com.algaworks.algafood.api.v1.model.input.PedidoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
@@ -49,6 +51,9 @@ public class PedidoController implements PedidoControllerOpenApi {
 
     private final PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
+    private final AlgaSecurity algaSecurity;
+
+    @CheckSecurity.Pedidos.PodePesquisar
     @Override
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
@@ -61,12 +66,14 @@ public class PedidoController implements PedidoControllerOpenApi {
                 .toModel(new PageWrapper<>(pedidosPage, pageable), pedidoResumoModelAssembler);
     }
 
+    @CheckSecurity.Pedidos.PodeBuscar
     @Override
-    @GetMapping("/{codigo}")
-    public PedidoModel buscar(@PathVariable String codigo) {
-        return assembler.toModel(buscaPedidoService.buscarOuFalhar(codigo));
+    @GetMapping("/{codigoPedido}")
+    public PedidoModel buscar(@PathVariable String codigoPedido) {
+        return assembler.toModel(buscaPedidoService.buscarOuFalhar(codigoPedido));
     }
 
+    @CheckSecurity.Pedidos.PodeCriar
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -74,8 +81,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         try {
             Pedido novoPedido = disassembler.toDomainObject(pedidoInput);
 
-            // TODO pegar usuário autenticado
-            novoPedido.setCliente(Usuario.builder().id(1L).build());
+            novoPedido.setCliente(Usuario.builder().id(algaSecurity.getUsuarioId()).build());
 
             return assembler.toModel(emissaoPedidoService.emissaoPedido(novoPedido));
         } catch (EntidadeNaoEncontradaException ex) {

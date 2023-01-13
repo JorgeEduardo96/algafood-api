@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.v1.model.input.FormaPagamentoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.FormaPagamentoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.exception.FormaPagamentoNaoEncontradaException;
 import com.algaworks.algafood.domain.model.exception.NegocioException;
@@ -37,7 +38,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
 
     private final FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
-
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @GetMapping
     public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -54,6 +55,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
                 .body(this.formaPagamentoModelAssembler.toCollectionModel(this.repository.findAll()));
     }
 
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @GetMapping("/{idFormaPagamento}")
     public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long idFormaPagamento, ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -71,6 +73,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
                 .body(formaPagamentoModelAssembler.toModel(formaPagamento));
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
@@ -78,6 +81,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
                 this.formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput)));
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @PutMapping("/{idFormaPagamento}")
     public FormaPagamentoModel atualizar(@PathVariable Long idFormaPagamento, @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
         FormaPagamento formaPagamentoAtual = this.cadastroFormaPagamentoService.buscarOuFalhar(idFormaPagamento);
@@ -89,6 +93,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         }
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @DeleteMapping("/{idFormaPagamento}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long idFormaPagamento) {

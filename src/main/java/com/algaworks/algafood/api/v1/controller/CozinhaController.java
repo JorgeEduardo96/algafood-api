@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.CozinhaModelAssembler;
 import com.algaworks.algafood.api.v1.model.CozinhaModel;
 import com.algaworks.algafood.api.v1.model.input.CozinhaInput;
 import com.algaworks.algafood.api.v1.openapi.controller.CozinhaControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
@@ -37,6 +38,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	private final PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
+	@CheckSecurity.Cozinhas.PodeConsultar
 	@Override
 	@GetMapping
 	public PagedModel<CozinhaModel> listar(@PageableDefault(size = 2) Pageable pageable) {
@@ -45,12 +47,14 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return pagedResourcesAssembler.toModel(repository.findAll(pageable), assembler);
 	}
 
+	@CheckSecurity.Cozinhas.PodeConsultar
 	@Override
 	@GetMapping("/{cozinhaId}")
 	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
 		return assembler.toModel(this.cadastroCozinhaService.buscarOuFalhar(cozinhaId));
 	}
 
+	@CheckSecurity.Cozinhas.PodeEditar
 	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -58,6 +62,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return assembler.toModel(this.cadastroCozinhaService.salvar(disassembler.toDomainObject(cozinhaInput)));
 	}
 
+	@CheckSecurity.Cozinhas.PodeEditar
 	@Override
 	@PutMapping("/{cozinhaId}")
 	public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody CozinhaInput cozinha) {
@@ -66,6 +71,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 		return assembler.toModel(this.cadastroCozinhaService.salvar(cozinhaAtual));
 	}
 
+	@CheckSecurity.Cozinhas.PodeEditar
 	@Override
 	@DeleteMapping("/{cozinhaId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)

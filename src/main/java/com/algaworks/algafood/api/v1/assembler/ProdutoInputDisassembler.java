@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProdutoInputDisassembler {
     
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
     
     public Produto toDomainObject(ProdutoInput produtoInput) {
         return modelMapper.map(produtoInput, Produto.class);
