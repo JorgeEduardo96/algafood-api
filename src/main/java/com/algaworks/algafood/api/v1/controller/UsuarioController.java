@@ -69,7 +69,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return this.assembler.toModel(this.cadastroUsuarioService.salvar(usuarioAtual));
     }
 
-    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropiaSenha
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
     @Override
     @PutMapping("/{usuarioId}/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
