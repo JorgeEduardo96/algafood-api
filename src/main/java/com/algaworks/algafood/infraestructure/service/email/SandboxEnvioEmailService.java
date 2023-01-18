@@ -9,13 +9,16 @@ public class SandboxEnvioEmailService extends SesEnvioEmailService {
     @Autowired
     private EmailProperties emailProperties;
 
+    @Autowired
+    private ProccesadorEmailTemplate proccesadorEmailTemplate;
+
     @Override
     protected SendEmailRequest criarSendEmailRequest(Mensagem mensagem) {
         String remetente = emailProperties.getRemetente();
         String destinatario = emailProperties.getSandBoxDestinatario();
         String assunto = mensagem.getAssunto();
 
-        String corpo = processarTemplate(mensagem);
+        String corpo = proccesadorEmailTemplate.processarTemplate(mensagem);
 
         SendEmailRequest sendEmailRequest =
                 new SendEmailRequest()

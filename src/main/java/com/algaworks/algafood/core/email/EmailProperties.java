@@ -20,7 +20,6 @@ public class EmailProperties {
 
     private TipoEnvioEmail impl = TipoEnvioEmail.FAKE;
 
-    @NotNull
     private String sandBoxDestinatario;
 
     public enum TipoEnvioEmail {
