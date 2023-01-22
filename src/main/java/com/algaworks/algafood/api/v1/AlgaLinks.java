@@ -318,7 +318,7 @@ public class AlgaLinks {
         String pedidosUrl = linkTo(methodOn(EstatisticasController.class)
                 .consultarVendasDiarias(null, null)).toUri().toString();
 
-        return new Link(UriTemplate.of(pedidosUrl, filtroVariables), rel);
+        return Link.of(UriTemplate.of(pedidosUrl, filtroVariables), rel);
     }
 
 }
