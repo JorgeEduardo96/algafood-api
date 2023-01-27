@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.v1.model;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -14,12 +13,9 @@ import java.util.Set;
 @Getter
 public class RestauranteModel extends RepresentationModel<RestauranteModel> {
 
-    @ApiModelProperty(example = "1")
     private Long id;
-    @ApiModelProperty(example = "Restaurante da Maria")
     private String nome;
     private CozinhaModel cozinha;
-    @ApiModelProperty(example = "7.50")
     private BigDecimal taxaFrete;
     private Boolean ativo;
     private Boolean aberto;

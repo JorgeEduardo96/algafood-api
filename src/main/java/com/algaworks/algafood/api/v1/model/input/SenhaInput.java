@@ -1,23 +1,22 @@
 package com.algaworks.algafood.api.v1.model.input;
 
 import com.algaworks.algafood.core.validation.SegurancaSenha;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 public class SenhaInput {
 
-    @ApiModelProperty(example = "Jr12322!;", required = true)
     @NotBlank
+    @Schema(example = "Primo190215;")
     private String senhaAtual;
 
-    @ApiModelProperty(example = "Jr12322!;", required = true)
     @NotBlank
     @SegurancaSenha
+    @Schema(example = "Primo190227!/")
     private String senhaNova;
 
 }

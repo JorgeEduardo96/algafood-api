@@ -1,50 +1,20 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.ProdutoModel;
 import com.algaworks.algafood.api.v1.model.input.ProdutoInput;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
-@Api(tags = "Produtos")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Restaurantes")
 public interface RestauranteProdutoControllerOpenApi {
 
-    @ApiOperation("Lista os produtos de um restaurante")
-    @ApiResponses({
-            @ApiResponse(code = 400, message = "ID do restaurante inválido", response = Problem.class),
-            @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
-    })
-    CollectionModel<ProdutoModel> listar(
-            @ApiParam(value = "ID do restaurante", example = "1", required = true)
-                    Long restauranteId,
+    CollectionModel<ProdutoModel> listar(Long restauranteId, Boolean incluirInativos);
 
-            @ApiParam(value = "Indica se deve ou não incluir produtos inativos no resultado da listagem",
-                    example = "false", defaultValue = "false")
-                    Boolean incluirInativos);
+    ProdutoModel buscar(Long restauranteId, Long produtoId);
 
-    @ApiOperation("Busca os produtos associados ao restaurante pelo código do produto")
-    @ApiResponses({
-            @ApiResponse(code = 404, message = "Restaurante ou produto não encontrada", response = Problem.class)
-    })
-    ProdutoModel buscar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
-                        @ApiParam(value="ID do produto", example = "1", required = true) Long produtoId);
+    ProdutoModel adicionar(Long restauranteId, ProdutoInput produtoInput);
 
-    @ApiOperation("Salva um produto no restaurante com o código informado")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "Produto cadastrado"),
-            @ApiResponse(code = 404, message = "Restaurante não encontrada", response = Problem.class)
-    })
-    ProdutoModel adicionar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
-                           @ApiParam(name="corpo", value="Representação de um novo produto", required = true)
-                                ProdutoInput produtoInput);
-
-    @ApiOperation("Atualiza um produto no restaurante com o código informado")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Produto atualizado"),
-            @ApiResponse(code = 404, message = "Restaurante ou produto não encontrada", response = Problem.class)
-    })
-    ProdutoModel atualizar(@ApiParam(value="ID do restaurante", example = "1", required = true) Long restauranteId,
-                           @ApiParam(value="ID do produto", example = "1", required = true) Long produtoId,
-                           @ApiParam(name="corpo", value="Representação de um novo produto", required = true)
-                                   ProdutoInput produtoInput);
+    ProdutoModel atualizar(Long restauranteId, Long produtoId, ProdutoInput produtoInput);
 }

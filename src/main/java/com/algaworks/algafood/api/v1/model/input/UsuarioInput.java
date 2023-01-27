@@ -1,29 +1,28 @@
 package com.algaworks.algafood.api.v1.model.input;
 
 import com.algaworks.algafood.core.validation.SegurancaSenha;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 public class UsuarioInput {
 
-    @ApiModelProperty(example = "joao.ger@algafood.com.br", required = true)
     @NotBlank
     @Email
+    @Schema(example = "jorge_primo@gmail.com")
     private String email;
 
-    @ApiModelProperty(example = "João Silva", required = true)
     @NotBlank
+    @Schema(example = "Jorge Primo")
     private String nome;
 
-    @ApiModelProperty(example = "Jr12322!;", required = true)
     @SegurancaSenha
     @NotBlank
+    @Schema(example = "AOaoIKMDW3EOP112?@")
     private String senha;
     
 }

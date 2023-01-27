@@ -8,7 +8,6 @@ import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
 import com.algaworks.algafood.api.v1.model.input.PedidoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
-import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
@@ -20,7 +19,7 @@ import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.service.BuscaPedidoService;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import com.algaworks.algafood.infraestructure.repository.spec.PedidoSpecs;
-import com.google.common.collect.ImmutableMap;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +28,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/v1/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,10 +54,10 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Override
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
-        Pageable pageableTraduzido = traduzirPageable(pageable);
+//        Pageable pageableTraduzido = traduzirPageable(pageable);
 
         Page<Pedido> pedidosPage = repository.findAll(PedidoSpecs.usandoFiltro(filtro),
-                pageableTraduzido);
+                pageable);
 
         return pagedResourcesAssembler
                 .toModel(new PageWrapper<>(pedidosPage, pageable), pedidoResumoModelAssembler);
@@ -89,17 +86,17 @@ public class PedidoController implements PedidoControllerOpenApi {
         }
     }
 
-    private Pageable traduzirPageable(Pageable apiPageable) {
-        var mapeamento = ImmutableMap.of(
-                "codigo", "codigo,",
-                "subTotal", "subTotal",
-                "restaurante.nome", "restaurante.nome",
-                "cliente.nome", "cliente.nome",
-                "valorTotal", "valorTotal"
-        );
-
-        return PageableTranslator.translate(apiPageable, mapeamento);
-    }
+//    private Pageable traduzirPageable(Pageable apiPageable) {
+//        var mapeamento = ImmutableMap.of(
+//                "codigo", "codigo,",
+//                "subTotal", "subTotal",
+//                "restaurante.nome", "restaurante.nome",
+//                "cliente.nome", "cliente.nome",
+//                "valorTotal", "valorTotal"
+//        );
+//
+//        return PageableTranslator.translate(apiPageable, mapeamento);
+//    }
 
 
 }

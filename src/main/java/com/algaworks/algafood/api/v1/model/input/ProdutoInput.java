@@ -1,32 +1,32 @@
 package com.algaworks.algafood.api.v1.model.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 public class ProdutoInput {
 
-    @ApiModelProperty(example = "Carne de Sol", required = true)
     @NotBlank
+    @Schema(example = "Bobó de Camarão")
     private String nome;
 
-    @ApiModelProperty(example = "500g de carne de sol, acompanhada de arroz e feijão", required = true)
     @NotBlank
+    @Schema(example = "400g de Bobó de Camarão, acompanhado de arroz e batata frita")
     private String descricao;
 
-    @ApiModelProperty(example = "47.50", required = true)
     @PositiveOrZero
+    @Schema(example = "7,99")
     private BigDecimal preco;
 
-    @ApiModelProperty(example = "true", required = true)
     @NotNull
+    @Schema(example = "true")
     private boolean ativo;
 
 }

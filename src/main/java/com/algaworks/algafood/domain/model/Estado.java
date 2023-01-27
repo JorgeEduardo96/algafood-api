@@ -3,8 +3,8 @@ package com.algaworks.algafood.domain.model;
 import com.algaworks.algafood.core.validation.Groups;
 import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

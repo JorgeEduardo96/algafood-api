@@ -1,41 +1,41 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.CidadeModel;
 import com.algaworks.algafood.api.v1.model.input.CidadeInput;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
-@Api(tags = "Cidades")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Cidades", description = "Gerenciamento das cidades")
 public interface CidadeControllerOpenApi {
 
-    @ApiOperation("Lista as cidades")
+    @Operation(summary = "Lista as cidades")
     CollectionModel<CidadeModel> listar();
 
-    @ApiOperation("Busca uma cidade por ID")
-    @ApiResponses({
-            @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
-            @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
+    @Operation(summary = "Busca uma cidade por ID", responses = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "ID da cidade inválido",
+                    content = @Content(schema = @Schema(ref = "Problema")))
     })
-    CidadeModel buscar(@ApiParam(value="ID de uma cidade", example = "1", required = true) Long cidadeId);
+    CidadeModel buscar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
-    @ApiOperation("Cadastra uma cidade")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "Cidade cadastrada")
-    })
-    CidadeModel adicionar(@ApiParam(name="corpo", value="Representação de uma nova cidade", required = true)
+    @Operation(summary = "Cadastra uma cidade")
+    CidadeModel adicionar(@RequestBody(description = "Representação de uma nova cidade", required = true)
                                   CidadeInput cidadeInput);
 
-    @ApiOperation("Atualiza uma cidade pór ID")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Cidade atualizada"),
-            @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
-    })
-    CidadeModel atualizar(@ApiParam(value="ID de uma cidade", example = "1", required = true) Long cidadeId,
-                          @ApiParam(name="corpo", required = true,
-                                  value="Representação de uma cidade com os novos dados") CidadeInput cidadeInput);
+    @Operation(summary = "Atualiza uma cidade por ID")
+    CidadeModel atualizar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId,
+                          @RequestBody(description = "Representação de uma com dados para atualuzar", required = true)
+                                  CidadeInput cidadeInput);
 
-    @ApiOperation("Exclui uma cidade por ID")
-    void remover(@ApiParam(value="ID de uma cidade", example = "1", required = true) Long cidadeId);
+    @Operation(summary = "Exclui uma cidade por ID")
+    void remover(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
 }

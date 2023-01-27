@@ -1,23 +1,22 @@
 package com.algaworks.algafood.api.v1.model.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 public class UsuarioSemSenhaInput {
 
-    @ApiModelProperty(example = "vendas5@algafood.com.br")
     @NotBlank
     @Email
+    @Schema(example = "jorge_primo@gmail.com")
     private String email;
 
-    @ApiModelProperty(example = "Vendas 5")
     @NotBlank
+    @Schema(example = "Jorge Primo")
     private String nome;
 
 }

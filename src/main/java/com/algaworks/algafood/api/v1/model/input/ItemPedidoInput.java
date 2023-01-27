@@ -1,26 +1,25 @@
 package com.algaworks.algafood.api.v1.model.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 @Getter
 @Setter
 public class ItemPedidoInput {
 
-    @ApiModelProperty(example = "1", required = true)
     @NotNull
+    @Schema(example = "1")
     private Long produtoId;
 
-    @ApiModelProperty(example = "15", required = true)
     @NotNull
     @Positive
+    @Schema(example = "5")
     private Long quantidade;
 
-    @ApiModelProperty(example = "Sem tomate")
+    @Schema(example = "Sem pimenta do reino")
     private String observacao;
 
 }

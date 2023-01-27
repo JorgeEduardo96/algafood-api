@@ -40,23 +40,23 @@ public class AuthorizedClientsController {
     public String revoke(Principal principal,
                          Model model,
                          @RequestParam(CLIENT_ID) String clientId) {
-
         RegisteredClient registeredClient = this.clientRepository.findByClientId(clientId);
 
         if (registeredClient == null)
             throw new AccessDeniedException(String.format("Cliente %s não encontrado", clientId));
 
+        OAuth2AuthorizationConsent consent = this.oAuth2AuthorizationConsentService.findById(registeredClient.getId(),
+                principal.getName());
 
-        OAuth2AuthorizationConsent consent =
-                this.oAuth2AuthorizationConsentService.findById(registeredClient.getId(), principal.getName());
-
-        List<OAuth2Authorization> authorizations
-                = this.oAuth2AuthorizationQueryService.listAuthorizations(principal.getName(), registeredClient.getId());
+        List<OAuth2Authorization> authorizations = this.oAuth2AuthorizationQueryService.listAuthorizations(
+                principal.getName(), registeredClient.getId());
 
         if (consent != null)
             this.oAuth2AuthorizationConsentService.remove(consent);
 
-        authorizations.forEach(this.oAuth2AuthorizationService::remove);
+        for (OAuth2Authorization authorization : authorizations) {
+            this.oAuth2AuthorizationService.remove(authorization);
+        }
 
         return "redirect:/oauth2/authorized-clients";
     }

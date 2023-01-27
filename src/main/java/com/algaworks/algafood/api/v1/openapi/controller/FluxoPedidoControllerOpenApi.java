@@ -1,33 +1,17 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
-@Api(tags = "Pedidos")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Pedidos")
 public interface FluxoPedidoControllerOpenApi {
 
-    @ApiOperation("Confirma o recebimento do pedido")
-    @ApiResponses({
-            @ApiResponse(code = 204, message = "Pedido confirmado"),
-            @ApiResponse(code = 404, message = "Pedido não encontrado")
-    })
-    ResponseEntity<Void> confirmar(@ApiParam(value="ID de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55",
-            required = true) String codigo);
+    ResponseEntity<Void> confirmar(String codigo);
 
-    @ApiOperation("Entrega do pedido")
-    @ApiResponses({
-            @ApiResponse(code = 204, message = "Pedido entregue"),
-            @ApiResponse(code = 404, message = "Pedido não encontrado")
-    })
-    ResponseEntity<Void> entregar(@ApiParam(value="ID de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55",
-            required = true) String codigo);
+    ResponseEntity<Void> entregar(String codigo);
 
-    @ApiOperation("Cancelamento do pedido")
-    @ApiResponses({
-            @ApiResponse(code = 204, message = "Pedido confirmado"),
-            @ApiResponse(code = 404, message = "Pedido não encontrado")
-    })
-    ResponseEntity<Void> cancelar(@ApiParam(value="ID de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55",
-            required = true) String codigo);
+    ResponseEntity<Void> cancelar(String codigo);
 
 }

@@ -1,38 +1,24 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.CozinhaModel;
 import com.algaworks.algafood.api.v1.model.input.CozinhaInput;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
-@Api(tags = "Cozinhas")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Cozinhas", description = "Gerenciamento das cozinhas")
 public interface CozinhaControllerOpenApi {
 
-    @ApiOperation("Lista as cozinhas")
     PagedModel<CozinhaModel> listar(Pageable pageable);
 
-    @ApiOperation("Busca uma cozinha por ID")
-    CozinhaModel buscar(@ApiParam(value="ID de uma cozinha", example = "1", required = true) Long cozinhaId);
+    CozinhaModel buscar(Long cozinhaId);
 
-    @ApiOperation("Cadastra uma cozinha")
-    @ApiResponses({
-            @ApiResponse(code = 201, message = "Cozinha cadastrada")
-    })
-    CozinhaModel adicionar(@ApiParam(name="corpo", value="Representação de uma nova cozinha", required = true)
-                           CozinhaInput cozinhaInput);
+    CozinhaModel adicionar(CozinhaInput cozinhaInput);
 
-    @ApiOperation("Atualiza uma cozinha por ID")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Cozinha atualizada"),
-            @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
-    })
-    CozinhaModel atualizar(@ApiParam(value="ID de uma cozinha", example = "1", required = true) Long cozinhaId,
-                      @ApiParam(name="corpo", required = true,
-                              value="Representação de uma cidade com os novos dados") CozinhaInput cozinhaInput);
+    CozinhaModel atualizar(Long cozinhaId, CozinhaInput cozinhaInput);
 
-    @ApiOperation("Exclui uma cozinha por ID")
-    void remover(@ApiParam(value="ID de uma cozinha", example = "1", required = true) Long cozinhaId);
+    void remover(Long cozinhaId);
 
 }

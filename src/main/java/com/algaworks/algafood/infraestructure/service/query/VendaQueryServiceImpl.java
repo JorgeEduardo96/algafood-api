@@ -7,11 +7,11 @@ import com.algaworks.algafood.domain.model.StatusPedido;
 import com.algaworks.algafood.domain.service.VendaQueryService;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +52,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         predicates.add(root.get("status").in(StatusPedido.CONFIRMADO, StatusPedido.ENTREGUE));
 
         if (filtro.getRestauranteId() != null) {
-            predicates.add(builder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+            predicates.add(builder.equal(root.get("restaurante").get("id"), filtro.getRestauranteId()));
         }
 
         if(filtro.getDataCriacaoInicio() != null) {

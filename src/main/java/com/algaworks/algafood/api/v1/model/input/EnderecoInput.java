@@ -1,34 +1,33 @@
 package com.algaworks.algafood.api.v1.model.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class  EnderecoInput {
 
-    @ApiModelProperty(example = "52041-370", required = true)
     @NotBlank
+    @Schema(example = "52041375")
     private String cep;
 
-    @ApiModelProperty(example = "Rua Gerson de Barros Pinangé", required = true)
     @NotBlank
+    @Schema(example = "Rua Gerson de Barros Pinto")
     private String logradouro;
 
-    @ApiModelProperty(example = "205", required = true)
     @NotBlank
+    @Schema(example = "405")
     private String numero;
 
-    @ApiModelProperty(example = "Casa")
+    @Schema(example = "Ap. 301")
     private String complemento;
 
-    @ApiModelProperty(example = "Ponto de Parada", required = true)
     @NotBlank
+    @Schema(example = "Arruda")
     private String bairro;
 
     @Valid

@@ -20,10 +20,10 @@ public class JdbcOAuth2AuthorizationQueryService implements OAuth2AuthorizationQ
             "INNER JOIN oauth2_registered_client rc ON rc.id = c.registered_client_id " +
             "WHERE c.principal_name = ?";
 
-    private final String LIST_AUTHORIZATIONS_QUERY = "SELECT a.* FROM oauth2_authorization a " +
-            "INNER JOIN oauth2_registered_client c ON c.id = a.registered_client_id " +
-            "WHERE a.principal_name - ? " +
-            "AND a.registered_client_id = ?";
+    private final String LIST_AUTHORIZATIONS_QUERY = "select a.* from oauth2_authorization a " +
+            "inner join oauth2_registered_client c on c.id = a.registered_client_id " +
+            "where a.principal_name = ? " +
+            "and a.registered_client_id  = ? ";
 
     public JdbcOAuth2AuthorizationQueryService(JdbcOperations jdbcOperations,
                                                RegisteredClientRepository repository) {
