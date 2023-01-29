@@ -76,11 +76,4 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senhaInput) {
         this.cadastroUsuarioService.alterarSenha(usuarioId, senhaInput);
     }
-
-    @Override
-    @DeleteMapping("/{usuarioId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletar(@PathVariable Long usuarioId) {
-        this.cadastroUsuarioService.excluir(usuarioId);
-    }
 }

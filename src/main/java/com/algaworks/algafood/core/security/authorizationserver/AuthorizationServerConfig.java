@@ -115,6 +115,7 @@ public class AuthorizationServerConfig {
                 user.getAuthorities().forEach(grantedAuthority -> authorities.add(grantedAuthority.getAuthority()));
 
                 context.getClaims().claim("usuario_id", usuario.getId().toString());
+                context.getClaims().claim("nome", usuario.getNome());
                 context.getClaims().claim("authorities", authorities);
             }
         });

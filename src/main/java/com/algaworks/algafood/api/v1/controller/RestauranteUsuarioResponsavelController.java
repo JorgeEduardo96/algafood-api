@@ -43,7 +43,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 		if (algaSecurity.podeGerenciarCadastroRestaurantes()) {
 			usuariosModel.add(algaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
 
-			usuariosModel.getContent().stream().forEach(usuarioModel -> {
+			usuariosModel.getContent().forEach(usuarioModel -> {
 				usuarioModel.add(algaLinks.linkToRestauranteResponsavelDesassociacao(
 						restauranteId, usuarioModel.getId(), "desassociar"));
 			});

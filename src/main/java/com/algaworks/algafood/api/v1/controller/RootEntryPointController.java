@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.v1.controller;
 
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.core.security.AlgaSecurity;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Root Entry Point", description = "Root Entry Point da aplicação")
 public class RootEntryPointController {
 
     private final AlgaLinks algaLinks;
@@ -21,6 +21,7 @@ public class RootEntryPointController {
     private final AlgaSecurity algaSecurity;
 
     @GetMapping
+    @Operation(hidden = true)
     public RootEntryPointModel root() {
         var rootEntryPointModel = new RootEntryPointModel();
 

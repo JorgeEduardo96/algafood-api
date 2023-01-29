@@ -31,21 +31,21 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
-    public CollectionModel<PermissaoModel> listar(@PathVariable Long grupoId) {
-        Grupo grupo = cadastroGrupoService.buscarOuFalhar(grupoId);
+    public CollectionModel<PermissaoModel> listar(@PathVariable Long idGrupo) {
+        Grupo grupo = cadastroGrupoService.buscarOuFalhar(idGrupo);
 
         CollectionModel<PermissaoModel> permissoesModel
                 = assembler.toCollectionModel(grupo.getPermissoes())
                 .removeLinks();
 
-        permissoesModel.add(algaLinks.linkToGrupoPermissoes(grupoId));
+        permissoesModel.add(algaLinks.linkToGrupoPermissoes(idGrupo));
 
         if (algaSecurity.podeEditarUsuariosGruposPermissoes()) {
-            permissoesModel.add(algaLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+            permissoesModel.add(algaLinks.linkToGrupoPermissaoAssociacao(idGrupo, "associar"));
 
             permissoesModel.getContent().forEach(permissaoModel -> {
                 permissaoModel.add(algaLinks.linkToGrupoPermissaoDesassociacao(
-                        grupoId, permissaoModel.getId(), "desassociar"));
+                        idGrupo, permissaoModel.getId(), "desassociar"));
             });
         }
 
