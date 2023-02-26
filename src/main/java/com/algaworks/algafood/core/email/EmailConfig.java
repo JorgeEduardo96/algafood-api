@@ -16,16 +16,11 @@ public class EmailConfig {
 
     @Bean
     public EnvioEmailService envioEmailService() {
-        switch (emailProperties.getImpl()) {
-            case FAKE:
-                return new FakeEnvioEmailService();
-            case SES:
-                return new SesEnvioEmailService();
-            case SANDBOX:
-                return new SandboxEnvioEmailService();
-            default:
-                return null;
-        }
+        return switch (emailProperties.getImpl()) {
+            case FAKE -> new FakeEnvioEmailService();
+            case SES -> new SesEnvioEmailService();
+            case SANDBOX -> new SandboxEnvioEmailService();
+        };
     }
 
 }

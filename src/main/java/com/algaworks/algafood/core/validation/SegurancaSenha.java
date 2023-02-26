@@ -9,6 +9,7 @@ import jakarta.validation.Payload;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -32,62 +33,35 @@ public @interface SegurancaSenha {
 
         @Override
         public boolean isValid(String senha, ConstraintValidatorContext context) {
-            boolean temDigito = false;
-            boolean temMinusculo = false;
-            boolean temMaisculo = false;
-            boolean temCaracterEspecial = false;
-            boolean maiorQue8Caracteres = senha.length() > 8;
-
-            for(char ch: senha.toCharArray()) {
-                if (!temDigito) {
-                    temDigito = Character.isDigit(ch);
-                }
-                if (!temMaisculo) {
-                    temMaisculo = Character.isUpperCase(ch);
-                }
-                if (!temMinusculo) {
-                    temMinusculo = Character.isLowerCase(ch);
-                }
-                if (!temCaracterEspecial) {
-                    temCaracterEspecial = !Character.isDigit(ch)
-                            && !Character.isLetter(ch)
-                            && !Character.isWhitespace(ch);
-                }
-            }
-
+            String regex = ".*";
             for (RequisitosSenha requisito : requisitosParaValidar) {
-                if (requisito.equals(RequisitosSenha.MAIUSCULO) && !temMaisculo) {
-                    return false;
-                } else if (requisito.equals(RequisitosSenha.MINUSCULO) && !temMinusculo) {
-                    return false;
-                } else if (requisito.equals(RequisitosSenha.CARACTERE_ESPECIAL) && !temCaracterEspecial) {
-                    return false;
-                } else if (requisito.equals(RequisitosSenha.DIGITO) && !temDigito) {
-                    return false;
-                } else if (requisito.equals(RequisitosSenha.MAIOR_8_DIGITOS) && !maiorQue8Caracteres) {
-                    return false;
-                }
+                regex += requisito.getRegexValidacao();
             }
-
-            return true;
+            regex += ".*";
+            return Pattern.compile(regex).matcher(senha).matches();
         }
     }
 
     enum RequisitosSenha {
-        MAIUSCULO("Maiúsculo"),
-        MINUSCULO("Minúsculo"),
-        CARACTERE_ESPECIAL("Caractere Especial"),
-        DIGITO("Dígito"),
-        MAIOR_8_DIGITOS("Maior que 8 caracteres");
+        MAIUSCULO("Maiúsculo", "(?=.*[A-Z])"),
+        MINUSCULO("Minúsculo", "(?=.*[a-z])"),
+        CARACTERE_ESPECIAL("Caractere Especial", "(?=.*[@#$%^&+=!?.])"),
+        DIGITO("Dígito","(?=.*[0-9])"),
+        MAIOR_8_DIGITOS("Maior que 8 caracteres", "^.{8,}$"),
+        ESPACO_EM_BRANCO("Não conter espçao em branco", "(?=\\S+$) ");
 
         private String descricao;
+        private String regexValidacao;
 
         public String getDescricao() {
             return descricao;
         }
 
-        RequisitosSenha(String descricao) {
+        public String getRegexValidacao() { return regexValidacao; }
+
+        RequisitosSenha(String descricao, String regexValidacao) {
             this.descricao = descricao;
+            this.regexValidacao = regexValidacao;
         }
     }
 }
