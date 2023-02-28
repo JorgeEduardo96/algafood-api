@@ -54,11 +54,8 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Override
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
-//        Pageable pageableTraduzido = traduzirPageable(pageable);
-
         Page<Pedido> pedidosPage = repository.findAll(PedidoSpecs.usandoFiltro(filtro),
                 pageable);
-
         return pagedResourcesAssembler
                 .toModel(new PageWrapper<>(pedidosPage, pageable), pedidoResumoModelAssembler);
     }
@@ -85,18 +82,5 @@ public class PedidoController implements PedidoControllerOpenApi {
             throw new NegocioException(ex.getMessage(), ex);
         }
     }
-
-//    private Pageable traduzirPageable(Pageable apiPageable) {
-//        var mapeamento = ImmutableMap.of(
-//                "codigo", "codigo,",
-//                "subTotal", "subTotal",
-//                "restaurante.nome", "restaurante.nome",
-//                "cliente.nome", "cliente.nome",
-//                "valorTotal", "valorTotal"
-//        );
-//
-//        return PageableTranslator.translate(apiPageable, mapeamento);
-//    }
-
 
 }

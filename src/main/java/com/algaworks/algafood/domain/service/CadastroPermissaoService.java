@@ -10,10 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CadastroPermissaoService {
 
-    private static final String MSG_PERMISSAO_EM_USO =
-            "Permissão de código %d não pode ser removida, pois está em uso";
-
-
     private final PermissaoRepository repository;
 
     public Permissao buscarOuFalhar(Long idPermissao) {

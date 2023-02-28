@@ -13,8 +13,6 @@ public class CadastroProdutoService {
 
     private final ProdutoRepository repository;
 
-    private final CadastroRestauranteService cadastroRestauranteService;
-
     @Transactional
     public Produto salvar(Produto produto) {
         return this.repository.save(produto);

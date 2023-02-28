@@ -61,9 +61,8 @@ public class AuthorizationServerConfig {
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
                 .csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
                 .formLogin(Customizer.withDefaults())
-                .exceptionHandling(exceptions -> {
-                    exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
-                })
+                .exceptionHandling(exceptions ->
+                        exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
                 .apply(authorizationServerConfigurer);
 
         return http.formLogin(customizer -> customizer.loginPage("/login")).build();

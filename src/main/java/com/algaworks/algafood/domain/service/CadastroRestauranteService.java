@@ -72,12 +72,10 @@ public class CadastroRestauranteService {
 		restauranteAtual.fechar();
 	}
 
-
 	public Restaurante buscarOuFalhar(Long idRestaurante) {
 		return this.repository.findById(idRestaurante).orElseThrow(() ->
 				new RestauranteNaoEncontradoException(idRestaurante));
 	}
-
 
 	@Transactional
     public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {

@@ -28,7 +28,6 @@ public class CatalogoFotoProdutoService {
             produtoRepository.delete(fotoExistente.get());
         }
 
-
         foto.setNomeArquivo(fotoStorageService.gerarNomeArquivo(foto.getNomeArquivo()));
         foto = produtoRepository.saveAndFlush(foto);
 
