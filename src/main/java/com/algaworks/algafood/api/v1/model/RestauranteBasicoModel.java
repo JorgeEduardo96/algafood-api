@@ -20,4 +20,6 @@ public class RestauranteBasicoModel extends RepresentationModel<RestauranteBasic
     @Schema(example = "12.00")
     private BigDecimal taxaFrete;
     private CozinhaModel cozinha;
+    private Boolean ativo;
+    private Boolean aberto;
 }
